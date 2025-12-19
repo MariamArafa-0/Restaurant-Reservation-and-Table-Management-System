@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedGuests = ""; // Variable to hold the selected party size
 
     // Generate numbers 1 to 20 dynamically
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 1; i <= 8; i++) {
         let li = document.createElement("li");
         li.textContent = i;
         li.addEventListener("click", () => {

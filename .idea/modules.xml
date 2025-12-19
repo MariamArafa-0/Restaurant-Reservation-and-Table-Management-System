@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Restaurant-Reservation-and-Table-Management-System.iml" filepath="$PROJECT_DIR$/.idea/Restaurant-Reservation-and-Table-Management-System.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/RRTMS.iml" filepath="$PROJECT_DIR$/.idea/RRTMS.iml" />
     </modules>
   </component>
 </project>
