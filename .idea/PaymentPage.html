@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+    <link rel="stylesheet" href="PaymentPage.css">
+</head>
+<body>
+
+<section class="payment-section">
+    <a href="BookATable.html" class="back-btn">
+        <img src="images/BackArrow.png" alt="Icon" class="top-left-icon">
+    </a>
+
+    <form id="payment-form" class="payment-form" method="POST" action="/process-payment">
+        <h1 class="payment-title">Payment</h1>
+
+        <div class="input-box">
+            <label for="card-number">Credit Card Number</label>
+            <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" required autocomplete="off">
+        </div>
+
+        <div class="input-box">
+            <label for="secure-key">Secure Key</label>
+            <input type="password" id="secure-key" placeholder="XXX" maxlength="3" required>
+        </div>
+
+        <div class="input-box">
+            <label for="expiration-date">Expiration Date</label>
+            <input type="month" id="expiration-date" required>
+        </div>
+
+        <div class="divider">
+            <span>or pay using</span>
+        </div>
+
+        <div class="payment-icons">
+            <img src="images/Visa.png" alt="Visa">
+            <img src="images/MasterCard.png" alt="MasterCard">
+            <img src="images/PayPal.png" alt="Amex">
+        </div>
+
+        <button type="submit" id="pay-btn" class="pay-btn">Pay Now</button>
+    </form>
+</section>
+
+<script src="PaymentPage.js"></script>
+</body>
+</html>

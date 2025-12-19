@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eden's Table - Restaurant Manager</title>
+    <style>
+        :root {
+          --primary: #8B4513;
+          --light-primary: #a65c2f;
+          --bg-dark: #1e1e1e;
+          --card-bg: #2a2a2a;
+          --text-color: #f3f3f3;
+          --accent: #d1a173;
+          --button-bg: #444;
+          --button-hover: #666;
+          --table-header-bg: #3a3a3a;
+          --table-row-even: #2a2a2a;
+          --table-row-odd: #252525;
+          --reservation-btn: #2196F3;
+          --feedback-btn: #4CAF50;
+          --edit-btn: #FFC107;
+          --add-button: #4CAF50;
+          --cancel-btn: #f44336;
+        }
+
+        body {
+          margin: 0;
+          font-family: Arial, sans-serif;
+          display: flex;
+          height: 100vh;
+          background-color: var(--bg-dark);
+          color: var(--text-color);
+        }
+
+        .sidebar {
+          width: 140px;
+          background-color: var(--primary);
+          color: #fff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 20px 10px;
+        }
+
+        .logo-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 150px;
+          height: 150px;
+          background-color: var(--primary);
+          border-radius: 50%;
+          margin-bottom: 40px;
+        }
+
+        .logo {
+          width: 120px;
+          height: 120px;
+          object-fit: contain;
+          border-radius: 50%;
+        }
+
+        .sidebar-nav {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          width: 100%;
+        }
+
+        .sidebar-nav button {
+          background: none;
+          border: none;
+          color: #fff;
+          padding: 12px 0;
+          font-size: 13px;
+          cursor: pointer;
+          border-radius: 8px;
+          transition: all 0.3s;
+          width: 100%;
+          height: 45px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+
+        .sidebar-nav button:hover {
+          background-color: var(--light-primary);
+        }
+
+        .sidebar-nav button.active {
+          background-color: var(--light-primary);
+          border: 2px solid var(--accent);
+        }
+
+        .main {
+          flex: 1;
+          padding: 30px;
+          overflow-y: auto;
+          background-color: var(--bg-dark);
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid #444;
+          flex-shrink: 0;
+        }
+
+        .header-title {
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .search-container {
+          margin-bottom: 30px;
+          display: none;
+          flex-shrink: 0;
+        }
+
+        .search-bar {
+          width: 100%;
+          padding: 12px 20px;
+          background-color: var(--table-row-even);
+          border: 1px solid #444;
+          border-radius: 6px;
+          color: var(--text-color);
+          font-size: 16px;
+        }
+
+        .search-bar:focus {
+          outline: none;
+          border-color: var(--accent);
+        }
+
+        .table-container {
+          flex: 1;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 20px;
+        }
+
+        .members-table {
+          width: 100%;
+          border-collapse: collapse;
+          background-color: var(--card-bg);
+          border-radius: 8px;
+          overflow: hidden;
+          flex: 1;
+          min-height: 400px;
+          table-layout: fixed;
+        }
+
+        .members-table thead {
+          position: sticky;
+          top: 0;
+        }
+
+        .members-table th {
+          background-color: var(--table-header-bg);
+          padding: 16px;
+          text-align: left;
+          font-weight: bold;
+          border-bottom: 2px solid #444;
+          position: sticky;
+          top: 0;
+          z-index: 10;
+        }
+
+        .members-table td {
+          padding: 16px;
+          border-bottom: 1px solid #444;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+
+        .members-table tbody {
+          overflow-y: auto;
+          display: block;
+          height: calc(100vh - 400px);
+        }
+
+        .members-table thead, .members-table tbody tr {
+          display: table;
+          width: 100%;
+          table-layout: fixed;
+        }
+
+        .members-table tbody tr:nth-child(even) {
+          background-color: var(--table-row-even);
+        }
+
+        .members-table tbody tr:nth-child(odd) {
+          background-color: var(--table-row-odd);
+        }
+
+        .members-table tbody tr:hover {
+          background-color: #3a3a3a;
+        }
+
+        .photo-placeholder {
+          width: 40px;
+          height: 40px;
+          background-color: #555;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #aaa;
+          font-size: 12px;
+        }
+
+        .details-column {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          align-items: flex-start;
+        }
+
+        .reservation-btn {
+          background-color: var(--reservation-btn);
+          border: none;
+          color: white;
+          padding: 8px 16px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold;
+          transition: all 0.3s;
+          min-width: 120px;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .reservation-btn:hover {
+          background-color: #0b7dda;
+          transform: scale(1.05);
+        }
+
+        .feedback-btn {
+          background-color: var(--feedback-btn);
+          border: none;
+          color: white;
+          padding: 8px 16px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold;
+          transition: all 0.3s;
+          min-width: 120px;
+          text-align: center;
+        }
+
+        .feedback-btn:hover {
+          background-color: #45a049;
+          transform: scale(1.05);
+        }
+
+        .action-buttons {
+          display: flex;
+          gap: 10px;
+        }
+
+        .action-btn {
+          background: none;
+          border: none;
+          color: var(--accent);
+          font-size: 18px;
+          cursor: pointer;
+          padding: 5px;
+          border-radius: 4px;
+          transition: background 0.3s;
+        }
+
+        .action-btn:hover {
+          background-color: rgba(209, 161, 115, 0.1);
+        }
+
+        .edit-btn {
+          color: var(--edit-btn);
+        }
+
+        .trash-btn {
+          color: #ff6b6b;
+        }
+
+        .stats-container {
+          background-color: var(--card-bg);
+          padding: 20px;
+          border-radius: 8px;
+          margin-bottom: 30px;
+          display: flex;
+          justify-content: space-between;
+          flex-shrink: 0;
+        }
+
+        .stat-item {
+          text-align: center;
+          flex: 1;
+        }
+
+        .stat-value {
+          font-size: 28px;
+          font-weight: bold;
+          color: var(--accent);
+          margin-bottom: 5px;
+        }
+
+        .stat-label {
+          font-size: 14px;
+          color: #aaa;
+        }
+
+        .filter-container {
+          background-color: var(--card-bg);
+          padding: 20px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          flex-shrink: 0;
+        }
+
+        .filter-title {
+          font-size: 18px;
+          margin-bottom: 15px;
+          color: var(--accent);
+        }
+
+        .filter-options {
+          display: flex;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+
+        .filter-option {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          min-width: 200px;
+        }
+
+        .filter-option label {
+          margin-bottom: 5px;
+          font-size: 14px;
+        }
+
+        .filter-option select,
+        .filter-option input {
+          padding: 8px 12px;
+          background-color: var(--table-row-even);
+          border: 1px solid #444;
+          border-radius: 4px;
+          color: var(--text-color);
+          width: 100%;
+        }
+
+        .filter-option select:focus,
+        .filter-option input:focus {
+          outline: none;
+          border-color: var(--accent);
+        }
+
+        /* Popup Modal */
+        .popup-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.6);
+          display: none;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        }
+
+        .popup {
+          background: var(--card-bg);
+          padding: 25px;
+          border-radius: 12px;
+          min-width: 300px;
+          text-align: center;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .popup-title {
+          font-size: 20px;
+          margin-bottom: 20px;
+          color: var(--accent);
+        }
+
+        .popup-buttons {
+          display: flex;
+          gap: 15px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .popup-btn {
+          background: var(--button-bg);
+          border: none;
+          color: #fff;
+          padding: 10px 20px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: background 0.3s;
+          min-width: 100px;
+        }
+
+        .popup-btn:hover {
+          background: var(--button-hover);
+        }
+
+        .popup-btn-edit {
+          background-color: #2196F3;
+        }
+
+        .popup-btn-edit:hover {
+          background-color: #0b7dda;
+        }
+
+        .popup-btn-delete {
+          background-color: #f44336;
+        }
+
+        .popup-btn-delete:hover {
+          background-color: #da190b;
+        }
+
+        .popup-btn-cancel {
+          background-color: #666;
+        }
+
+        .popup-btn-cancel:hover {
+          background-color: #777;
+        }
+
+        .popup-btn-cancel-reservation {
+          background-color: var(--cancel-btn);
+          color: white;
+        }
+
+        .popup-btn-cancel-reservation:hover {
+          background-color: #d32f2f;
+        }
+
+        /* Sections */
+        .accounts-section,
+        .reservations-section,
+        .feedback-section,
+        .reports-section {
+          display: none;
+          flex: 1;
+        }
+
+        .accounts-section.active,
+        .reservations-section.active,
+        .feedback-section.active,
+        .reports-section.active {
+          display: block;
+        }
+
+        .reports-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 20px;
+        }
+
+        .report-card {
+          background-color: var(--card-bg);
+          padding: 20px;
+          border-radius: 8px;
+          border-left: 5px solid var(--accent);
+          cursor: pointer;
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .report-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .report-card h3 {
+          margin-top: 0;
+          margin-bottom: 10px;
+          color: var(--accent);
+          font-size: 16px;
+        }
+
+        .report-card p {
+          color: #aaa;
+          line-height: 1.4;
+          font-size: 14px;
+          margin-bottom: 10px;
+        }
+
+        .report-metrics {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 10px;
+        }
+
+        .report-metric {
+          text-align: center;
+        }
+
+        .report-metric-value {
+          font-size: 18px;
+          font-weight: bold;
+          color: var(--accent);
+        }
+
+        .report-metric-label {
+          font-size: 12px;
+          color: #aaa;
+        }
+
+        .pagination {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 15px;
+          margin-top: 20px;
+          flex-shrink: 0;
+        }
+
+        .pagination-btn {
+          background-color: var(--button-bg);
+          border: none;
+          color: white;
+          padding: 8px 16px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          transition: background 0.3s;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+          background-color: var(--button-hover);
+        }
+
+        .pagination-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .page-info {
+          font-size: 14px;
+          color: #aaa;
+        }
+
+        /* Reservations List */
+        .reservations-list,
+        .feedback-list-container {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          margin-top: 20px;
+        }
+
+        .reservation-item-global,
+        .feedback-item-global {
+          background-color: var(--card-bg);
+          padding: 20px;
+          border-radius: 8px;
+          border-left: 4px solid var(--reservation-btn);
+          position: relative;
+          padding-bottom: 50px; /* Added padding to accommodate bottom button */
+        }
+
+        .feedback-item-global {
+          border-left: 4px solid var(--feedback-btn);
+        }
+
+        .reservation-header-global {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 15px;
+        }
+
+        .reservation-customer-info {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .reservation-customer-name {
+          font-weight: bold;
+          color: var(--accent);
+          font-size: 18px;
+        }
+
+        .reservation-customer-email {
+          font-size: 14px;
+          color: #aaa;
+        }
+
+        .reservation-date-global {
+          font-weight: bold;
+          color: var(--accent);
+          font-size: 16px;
+          text-align: right;
+        }
+
+        .reservation-status {
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: bold;
+          display: inline-block;
+          margin-top: 5px;
+        }
+
+        .status-confirmed {
+          background-color: #4CAF50;
+          color: white;
+        }
+
+        .status-pending {
+          background-color: #FFC107;
+          color: #333;
+        }
+
+        .status-cancelled {
+          background-color: #f44336;
+          color: white;
+        }
+
+        .reservation-details-global {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 15px;
+          font-size: 14px;
+        }
+
+        .detail-item {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .detail-label {
+          font-size: 12px;
+          color: #aaa;
+          margin-bottom: 2px;
+        }
+
+        .detail-value {
+          font-weight: bold;
+        }
+
+        .no-data {
+          text-align: center;
+          padding: 60px;
+          color: #aaa;
+          font-style: italic;
+          font-size: 16px;
+          background-color: var(--card-bg);
+          border-radius: 8px;
+        }
+
+        /* Feedback items */
+        .feedback-header-global {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 15px;
+        }
+
+        .feedback-customer-info {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .feedback-customer-name {
+          font-weight: bold;
+          color: var(--accent);
+          font-size: 18px;
+        }
+
+        .feedback-customer-email {
+          font-size: 14px;
+          color: #aaa;
+        }
+
+        .feedback-date-global {
+          font-size: 12px;
+          color: #aaa;
+          text-align: right;
+        }
+
+        .feedback-rating-global {
+          margin-bottom: 15px;
+        }
+
+        .star {
+          color: gold;
+          font-size: 18px;
+        }
+
+        .feedback-text-global {
+          font-size: 15px;
+          line-height: 1.5;
+          color: #ddd;
+          background-color: var(--table-row-even);
+          padding: 15px;
+          border-radius: 6px;
+          border-left: 3px solid var(--feedback-btn);
+        }
+
+        /* Responsive table columns */
+        @media (max-width: 1200px) {
+          .members-table th, .members-table td {
+            padding: 12px;
+          }
+
+          .members-table {
+            font-size: 14px;
+          }
+        }
+
+        @media (max-width: 992px) {
+          .sidebar {
+            width: 120px;
+          }
+
+          .sidebar-nav button {
+            font-size: 12px;
+            height: 45px;
+          }
+
+          .main {
+            padding: 20px;
+          }
+
+          .filter-options {
+            flex-direction: column;
+          }
+
+          .filter-option {
+            min-width: 100%;
+          }
+        }
+
+        @media (max-width: 768px) {
+          body {
+            flex-direction: column;
+          }
+
+          .sidebar {
+            width: 100%;
+            height: auto;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 15px;
+          }
+
+          .logo-container {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+          }
+
+          .logo {
+            width: 80px;
+            height: 80px;
+          }
+
+          .sidebar-nav {
+            flex-direction: row;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+
+          .sidebar-nav button {
+            width: 120px;
+            height: 40px;
+            font-size: 12px;
+          }
+
+          .main {
+            height: calc(100vh - 200px);
+            padding: 15px;
+          }
+        }
+
+        /* Reservation Modal */
+        .reservation-content {
+          max-width: 600px;
+          max-height: 400px;
+          overflow-y: auto;
+          text-align: left;
+        }
+
+        .reservation-list {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .reservation-item {
+          background-color: var(--table-row-even);
+          padding: 15px;
+          border-radius: 6px;
+          border-left: 4px solid var(--reservation-btn);
+          position: relative;
+          padding-bottom: 50px; /* Added padding to accommodate bottom button */
+        }
+
+        .reservation-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+        }
+
+        .reservation-date {
+          font-weight: bold;
+          color: var(--accent);
+          font-size: 16px;
+        }
+
+        .reservation-status {
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: bold;
+        }
+
+        .status-confirmed {
+          background-color: #4CAF50;
+          color: white;
+        }
+
+        .status-pending {
+          background-color: #FFC107;
+          color: #333;
+        }
+
+        .status-cancelled {
+          background-color: #f44336;
+          color: white;
+        }
+        .reservation-details {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+          font-size: 14px;
+        }
+
+        .detail-item {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .detail-label {
+          font-size: 12px;
+          color: #aaa;
+          margin-bottom: 2px;
+        }
+
+        .detail-value {
+          font-weight: bold;
+        }
+
+        .no-reservations {
+          text-align: center;
+          padding: 40px;
+          color: #aaa;
+          font-style: italic;
+        }
+
+        /* Edit Modal */
+        .edit-form {
+          max-width: 400px;
+          text-align: left;
+        }
+
+        .form-group {
+          margin-bottom: 20px;
+        }
+
+        .form-group label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: bold;
+          color: var(--accent);
+        }
+
+        .form-group input {
+          width: 100%;
+          padding: 10px;
+          background-color: var(--table-row-even);
+          border: 1px solid #444;
+          border-radius: 4px;
+          color: var(--text-color);
+          font-size: 14px;
+        }
+
+        .form-group input:focus {
+          outline: none;
+          border-color: var(--accent);
+        }
+
+        .form-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 10px;
+          margin-top: 20px;
+          flex-wrap: wrap;
+        }
+
+        /* Reservation Edit Button - MOVED TO BOTTOM RIGHT */
+        .reservation-edit-btn {
+          position: absolute;
+          bottom: 10px;  /* Changed from top to bottom */
+          right: 10px;
+          background: none;
+          border: none;
+          color: var(--edit-btn);
+          font-size: 16px;
+          cursor: pointer;
+          padding: 5px;
+          border-radius: 4px;
+          transition: background 0.3s;
+          z-index: 5;
+        }
+
+        .reservation-edit-btn:hover {
+          background-color: rgba(255, 193, 7, 0.1);
+        }
+
+        /* Reservation Edit Modal */
+        .reservation-edit-form {
+          max-width: 500px;
+          text-align: left;
+        }
+
+        .reservation-edit-form .form-group {
+          margin-bottom: 15px;
+        }
+
+        .reservation-edit-form .form-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 15px;
+          margin-bottom: 15px;
+        }
+
+        .reservation-edit-form select {
+          width: 100%;
+          padding: 10px;
+          background-color: var(--table-row-even);
+          border: 1px solid #444;
+          border-radius: 4px;
+          color: var(--text-color);
+          font-size: 14px;
+        }
+
+        .reservation-edit-form select:focus {
+          outline: none;
+          border-color: var(--accent);
+        }
+
+        .current-status-display {
+          padding: 8px 12px;
+          background-color: var(--table-row-even);
+          border-radius: 4px;
+          margin-bottom: 15px;
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .status-confirmed-display {
+          color: #4CAF50;
+        }
+
+        .status-pending-display {
+          color: #FFC107;
+        }
+
+        .status-cancelled-display {
+          color: #f44336;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo-container">
+        <img alt="Eden's Table Logo" class="logo" src="images/logo.jpg">
+    </div>
+    <div class="sidebar-nav">
+        <button class="active" data-section="accounts" title="Customers">
+            CUSTOMERS
+        </button>
+        <button data-section="reservations" title="All Reservations">
+            RESERVATIONS
+        </button>
+        <button data-section="feedback" title="All Feedback">
+            FEEDBACK
+        </button>
+        <button data-section="reports" title="Reports">
+            REPORTS
+        </button>
+        <button id="logoutBtn" data-section="logout" title="Logout">
+            LOGOUT
+        </button>
+    </div>
+</div>
+
+<div class="main" id="mainContent">
+    <!-- Customers section (default) -->
+    <div id="accountsSection" class="accounts-section active">
+        <div class="header">
+            <div class="header-title">Customers</div>
+            <!-- Removed Add Customer button -->
+        </div>
+
+        <div class="search-container" id="searchContainer">
+            <input type="text" class="search-bar" placeholder="Search customers by name or email...">
+        </div>
+
+        <div class="filter-container">
+            <div class="filter-title">Filter</div>
+            <div class="filter-options">
+                <div class="filter-option">
+                    <label for="nameFilter">Name or Email</label>
+                    <input type="text" id="nameFilter" placeholder="Filter by name or email...">
+                </div>
+                <div class="filter-option">
+                    <label for="itemsPerPage">Items per page</label>
+                    <select id="itemsPerPage">
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="members-table">
+                <thead>
+                <tr>
+                    <th style="width: 60px">Photo</th>
+                    <th style="width: 20%">Customer Name</th>
+                    <th style="width: 25%">Email</th>
+                    <th style="width: 25%">Details</th>
+                    <th style="width: 20%">Action</th>
+                </tr>
+                </thead>
+                <tbody id="membersTableBody">
+                <!-- Table rows will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="pagination-btn" id="prevPageBtn">← Previous</button>
+            <span class="page-info" id="pageInfo">Page 1 of 10</span>
+            <button class="pagination-btn" id="nextPageBtn">Next →</button>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-value" id="totalCustomers">0</div>
+                <div class="stat-label">Total Customers</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Reservations section -->
+    <div id="reservationsSection" class="reservations-section">
+        <div class="header">
+            <div class="header-title">All Reservations</div>
+        </div>
+
+        <div class="search-container" id="reservationsSearchContainer">
+            <input type="text" class="search-bar" id="reservationsSearchBar" placeholder="Search reservations by customer name, date, or table...">
+        </div>
+
+        <div class="filter-container">
+            <div class="filter-title">Filter Reservations</div>
+            <div class="filter-options">
+                <div class="filter-option">
+                    <label for="reservationStatusFilter">Status</label>
+                    <select id="reservationStatusFilter">
+                        <option value="all">All Statuses</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="pending">Pending</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="filter-option">
+                    <label for="reservationDateFilter">Date</label>
+                    <input type="text" id="reservationDateFilter" placeholder="Filter by date...">
+                </div>
+            </div>
+        </div>
+
+        <div class="reservations-list" id="allReservationsList">
+            <!-- All reservations will be inserted here by JavaScript -->
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-value" id="totalReservations">0</div>
+                <div class="stat-label">Total Reservations</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="confirmedReservations">0</div>
+                <div class="stat-label">Confirmed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="pendingReservations">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="cancelledReservations">0</div>
+                <div class="stat-label">Cancelled</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Feedback section -->
+    <div id="feedbackSection" class="feedback-section">
+        <div class="header">
+            <div class="header-title">All Customer Feedback</div>
+        </div>
+
+        <div class="search-container" id="feedbackSearchContainer">
+            <input type="text" class="search-bar" id="feedbackSearchBar" placeholder="Search feedback by customer name or feedback text...">
+        </div>
+
+        <div class="filter-container">
+            <div class="filter-title">Filter Feedback</div>
+            <div class="filter-options">
+                <div class="filter-option">
+                    <label for="feedbackRatingFilter">Rating</label>
+                    <select id="feedbackRatingFilter">
+                        <option value="all">All Ratings</option>
+                        <option value="5">★★★★★ (5 stars)</option>
+                        <option value="4">★★★★☆ (4 stars)</option>
+                        <option value="3">★★★☆☆ (3 stars)</option>
+                        <option value="2">★★☆☆☆ (2 stars)</option>
+                        <option value="1">★☆☆☆☆ (1 star)</option>
+                    </select>
+                </div>
+                <div class="filter-option">
+                    <label for="feedbackDateFilter">Date Range</label>
+                    <input type="text" id="feedbackDateFilter" placeholder="Filter by date...">
+                </div>
+            </div>
+        </div>
+
+        <div class="feedback-list-container" id="allFeedbackList">
+            <!-- All feedback will be inserted here by JavaScript -->
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-value" id="totalFeedback">0</div>
+                <div class="stat-label">Total Feedback</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="averageRating">0.0</div>
+                <div class="stat-label">Avg Rating</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="fiveStarFeedback">0</div>
+                <div class="stat-label">5 Star Ratings</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports section -->
+    <div id="reportsSection" class="reports-section">
+        <div class="header">
+            <div class="header-title">Restaurant Reports</div>
+        </div>
+
+        <div class="reports-grid">
+            <div class="report-card" onclick="showReport('daily')">
+                <h3>Daily Reservations</h3>
+                <p>Overview of today's reservations and table availability.</p>
+                <div class="report-metrics">
+                    <div class="report-metric">
+                        <div class="report-metric-value" id="todayReservations">0</div>
+                        <div class="report-metric-label">Today</div>
+                    </div>
+                    <div class="report-metric">
+                        <div class="report-metric-value" id="tomorrowReservations">0</div>
+                        <div class="report-metric-label">Tomorrow</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-card" onclick="showReport('revenue')">
+                <h3>Revenue Analysis</h3>
+                <p>Daily, weekly, and monthly revenue reports.</p>
+                <div class="report-metrics">
+                    <div class="report-metric">
+                        <div class="report-metric-value">$4,850</div>
+                        <div class="report-metric-label">This Week</div>
+                    </div>
+                    <div class="report-metric">
+                        <div class="report-metric-value">+5.2%</div>
+                        <div class="report-metric-label">Growth</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-card" onclick="showReport('customers')">
+                <h3>Customer Analytics</h3>
+                <p>Customer preferences and visit frequency.</p>
+                <div class="report-metrics">
+                    <div class="report-metric">
+                        <div class="report-metric-value">8</div>
+                        <div class="report-metric-label">New Today</div>
+                    </div>
+                    <div class="report-metric">
+                        <div class="report-metric-value">32</div>
+                        <div class="report-metric-label">Regulars</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-card" onclick="showReport('feedback')">
+                <h3>Customer Feedback</h3>
+                <p>Reviews and ratings from customers.</p>
+                <div class="report-metrics">
+                    <div class="report-metric">
+                        <div class="report-metric-value">4.7</div>
+                        <div class="report-metric-label">Avg Rating</div>
+                    </div>
+                    <div class="report-metric">
+                        <div class="report-metric-value">45</div>
+                        <div class="report-metric-label">Reviews</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Customer Modal -->
+<div class="popup-overlay" id="deleteOverlay">
+    <div class="popup">
+        <div class="popup-title" id="deleteAccountName">Delete Customer</div>
+        <div class="popup-buttons">
+            <button class="popup-btn popup-btn-delete" id="confirmDeleteBtn">Delete</button>
+            <button class="popup-btn popup-btn-cancel" id="cancelDeleteBtn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Customer Modal - Modified to edit only name -->
+<div class="popup-overlay" id="editOverlay">
+    <div class="popup">
+        <div class="popup-title" id="editAccountName">Edit Customer</div>
+        <div class="edit-form">
+            <div class="form-group">
+                <label for="editCustomerName">Customer Name</label>
+                <input type="text" id="editCustomerName" placeholder="Enter customer name">
+            </div>
+            <div class="form-actions">
+                <button class="popup-btn popup-btn-edit" id="saveEditBtn">Save</button>
+                <button class="popup-btn popup-btn-cancel" id="cancelEditBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reservations Modal -->
+<div class="popup-overlay" id="reservationsOverlay">
+    <div class="popup">
+        <div class="popup-title" id="reservationsTitle">Customer Reservations</div>
+        <div class="reservation-content" id="reservationsContent">
+            <!-- Reservation content will be inserted here -->
+        </div>
+        <div class="popup-buttons">
+            <button class="popup-btn popup-btn-cancel" id="closeReservationsBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Feedback Modal -->
+<div class="popup-overlay" id="feedbackOverlay">
+    <div class="popup">
+        <div class="popup-title" id="feedbackTitle">Customer Feedback</div>
+        <div class="reservation-content" id="feedbackContent">
+            <!-- Feedback content will be inserted here -->
+        </div>
+        <div class="popup-buttons">
+            <button class="popup-btn popup-btn-cancel" id="closeFeedbackBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Report Detail Modal -->
+<div class="popup-overlay" id="reportOverlay">
+    <div class="popup">
+        <div class="popup-title" id="reportTitle">Report Details</div>
+        <div class="reservation-content" id="reportContent">
+            <!-- Report content will be inserted here -->
+        </div>
+        <div class="popup-buttons">
+            <button class="popup-btn popup-btn-cancel" id="closeReportBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Reservation Edit Modal -->
+<div class="popup-overlay" id="reservationEditOverlay">
+    <div class="popup">
+        <div class="popup-title" id="reservationEditTitle">Edit Reservation</div>
+        <div class="reservation-edit-form">
+            <div id="currentStatusDisplay" class="current-status-display">
+                <!-- Current status will be displayed here -->
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editReservationDate">Date</label>
+                    <input type="text" id="editReservationDate" placeholder="e.g., Friday, March 15, 2024">
+                </div>
+                <div class="form-group">
+                    <label for="editReservationTime">Time</label>
+                    <input type="text" id="editReservationTime" placeholder="e.g., 19:30">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editReservationPartySize">Party Size</label>
+                    <input type="number" id="editReservationPartySize" placeholder="Number of people" min="1" max="20">
+                </div>
+                <div class="form-group">
+                    <label for="editReservationTable">Table</label>
+                    <input type="text" id="editReservationTable" placeholder="e.g., Table 5">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="editReservationStatus">Status</label>
+                <select id="editReservationStatus">
+                    <option value="confirmed">Confirmed</option>
+                    <option value="pending">Pending</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="editReservationSpecialRequests">Special Requests</label>
+                <input type="text" id="editReservationSpecialRequests" placeholder="Any special requests...">
+            </div>
+            <div class="form-group">
+                <label for="editReservationContactPhone">Contact Phone</label>
+                <input type="text" id="editReservationContactPhone" placeholder="Customer contact phone">
+            </div>
+            <div class="form-actions">
+                <button class="popup-btn popup-btn-edit" id="saveReservationEditBtn">Save Changes</button>
+                <button class="popup-btn popup-btn-cancel-reservation" id="cancelReservationBtn">Cancel Reservation</button>
+                <button class="popup-btn popup-btn-cancel" id="cancelReservationEditBtn">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Generate a dataset of 50 customers for the restaurant
+    const generateMembersData = () => {
+      const firstNames = [
+        'James', 'Mary', 'John', 'Patricia', 'Robert', 'Jennifer', 'Michael', 'Linda',
+        'William', 'Elizabeth', 'David', 'Susan', 'Richard', 'Jessica', 'Joseph', 'Sarah',
+        'Thomas', 'Karen', 'Charles', 'Nancy', 'Christopher', 'Lisa', 'Daniel', 'Margaret',
+        'Matthew', 'Betty', 'Anthony', 'Sandra', 'Donald', 'Ashley', 'Mark', 'Kimberly',
+        'Paul', 'Emily', 'Steven', 'Donna', 'Andrew', 'Michelle', 'Kenneth', 'Carol',
+        'Joshua', 'Amanda', 'Kevin', 'Dorothy', 'Brian', 'Melissa', 'George', 'Deborah'
+      ];
+
+      const lastNames = [
+        'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis',
+        'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson',
+        'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin', 'Lee', 'Perez', 'Thompson',
+        'White', 'Harris', 'Sanchez', 'Clark', 'Ramirez', 'Lewis', 'Robinson', 'Walker',
+        'Young', 'Allen', 'King', 'Wright', 'Scott', 'Torres', 'Nguyen', 'Hill', 'Flores',
+        'Green', 'Adams', 'Nelson', 'Baker', 'Hall', 'Rivera', 'Campbell', 'Mitchell'
+      ];
+
+      const domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com'];
+
+      const members = [];
+
+      // Create 50 customers
+      for (let i = 1; i <= 50; i++) {
+        const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+        const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+        const domain = domains[Math.floor(Math.random() * domains.length)];
+
+        // Generate reservations for customers
+        const hasReservations = Math.random() < 0.7;
+        let reservations = [];
+
+        if (hasReservations) {
+          const reservationCount = Math.floor(Math.random() * 4) + 1;
+          for (let r = 0; r < reservationCount; r++) {
+            const statuses = ['confirmed', 'pending', 'cancelled'];
+            const status = statuses[Math.floor(Math.random() * statuses.length)];
+
+            const date = new Date();
+            date.setDate(date.getDate() + Math.floor(Math.random() * 30));
+
+            const partySizes = [2, 2, 2, 4, 4, 6, 8];
+            const partySize = partySizes[Math.floor(Math.random() * partySizes.length)];
+
+            const times = ['18:00', '19:00', '19:30', '20:00', '20:30', '21:00'];
+            const time = times[Math.floor(Math.random() * times.length)];
+
+            const tables = ['Table 1', 'Table 2', 'Table 3', 'Table 4', 'Table 5', 'Table 6', 'Table 7', 'Table 8'];
+            const table = tables[Math.floor(Math.random() * tables.length)];
+
+            reservations.push({
+              id: r + 1,
+              date: date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+              time: time,
+              partySize: partySize,
+              table: table,
+              status: status,
+              specialRequests: Math.random() < 0.3 ? 'Window seat requested' : '',
+              contactPhone: `+1 (555) ${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`
+            });
+          }
+        }
+
+        // Generate feedback for customers
+        const hasFeedback = Math.random() < 0.6;
+        let feedback = [];
+
+        if (hasFeedback) {
+          const feedbackCount = Math.floor(Math.random() * 3) + 1;
+          for (let f = 0; f < feedbackCount; f++) {
+            const rating = Math.floor(Math.random() * 5) + 1;
+            const feedbackTypes = [
+              "Great food and service! Will definitely come back.",
+              "The steak was perfectly cooked. Excellent experience.",
+              "Service was a bit slow but food was worth the wait.",
+              "Amazing ambiance and friendly staff.",
+              "Portions were smaller than expected.",
+              "Best restaurant in town! Highly recommended.",
+              "Dessert was absolutely delicious.",
+              "Good value for money. Nice wine selection.",
+              "Table was ready on time. Smooth reservation process.",
+              "Vegetarian options were limited.",
+              "Perfect for special occasions.",
+              "The staff remembered our anniversary!"
+            ];
+            feedback.push({
+              id: f + 1,
+              date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+              rating: rating,
+              text: feedbackTypes[Math.floor(Math.random() * feedbackTypes.length)]
+            });
+          }
+        }
+
+        members.push({
+          id: i,
+          name: `${firstName} ${lastName}`,
+          email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i % 10}@${domain}`,
+          phone: `+1 (555) ${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`,
+          reservations: reservations,
+          feedback: feedback,
+          notes: Math.random() < 0.5 ? 'Regular customer, prefers quiet tables' : '',
+          joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toLocaleDateString()
+        });
+      }
+
+      // Add some specific customers (regulars)
+      const specificMembers = [
+        {
+          id: 51,
+          name: 'George Lindelof',
+          email: 'carlsen@armand.no',
+          phone: '+1 (555) 123-4567',
+          reservations: [
+            {
+              id: 1,
+              date: 'Friday, March 15, 2024',
+              time: '19:30',
+              partySize: 4,
+              table: 'Table 5',
+              status: 'confirmed',
+              specialRequests: 'Birthday celebration',
+              contactPhone: '+1 (555) 123-4567'
+            },
+            {
+              id: 2,
+              date: 'Saturday, March 23, 2024',
+              time: '20:00',
+              partySize: 6,
+              table: 'Table 8',
+              status: 'pending',
+              specialRequests: '',
+              contactPhone: '+1 (555) 123-4567'
+            }
+          ],
+          feedback: [
+            {
+              id: 1,
+              date: 'January 15, 2024',
+              rating: 5,
+              text: 'Excellent service as always!'
+            },
+            {
+              id: 2,
+              date: 'February 20, 2024',
+              rating: 4,
+              text: 'The new menu items are fantastic.'
+            }
+          ],
+          notes: 'VIP customer, prefers table by the window',
+          joinDate: '2023-01-15'
+        },
+        {
+          id: 52,
+          name: 'Eric Dyer',
+          email: 'cristofetz.sjørg@tens.no',
+          phone: '+1 (555) 234-5678',
+          reservations: [
+            {
+              id: 1,
+              date: 'Today, March 10, 2024',
+              time: '18:00',
+              partySize: 2,
+              table: 'Table 2',
+              status: 'confirmed',
+              specialRequests: 'Anniversary dinner',
+              contactPhone: '+1 (555) 234-5678'
+            }
+          ],
+          feedback: [
+            {
+              id: 1,
+              date: 'February 28, 2024',
+              rating: 5,
+              text: 'Perfect anniversary dinner!'
+            }
+          ],
+          notes: '',
+          joinDate: '2023-11-20'
+        }
+      ];
+
+      return [...members, ...specificMembers];
+    };
+
+    // Elements
+    const sidebarButtons = document.querySelectorAll('.sidebar-nav button');
+    const accountsSection = document.getElementById('accountsSection');
+    const reservationsSection = document.getElementById('reservationsSection');
+    const feedbackSection = document.getElementById('feedbackSection');
+    const reportsSection = document.getElementById('reportsSection');
+    const membersTableBody = document.getElementById('membersTableBody');
+    const searchContainer = document.getElementById('searchContainer');
+    const searchBar = document.querySelector('.search-bar');
+
+    // Reservations section elements
+    const allReservationsList = document.getElementById('allReservationsList');
+    const reservationsSearchContainer = document.getElementById('reservationsSearchContainer');
+    const reservationsSearchBar = document.getElementById('reservationsSearchBar');
+    const reservationStatusFilter = document.getElementById('reservationStatusFilter');
+    const reservationDateFilter = document.getElementById('reservationDateFilter');
+    const totalReservationsElement = document.getElementById('totalReservations');
+    const confirmedReservationsElement = document.getElementById('confirmedReservations');
+    const pendingReservationsElement = document.getElementById('pendingReservations');
+    const cancelledReservationsElement = document.getElementById('cancelledReservations');
+
+    // Feedback section elements
+    const allFeedbackList = document.getElementById('allFeedbackList');
+    const feedbackSearchContainer = document.getElementById('feedbackSearchContainer');
+    const feedbackSearchBar = document.getElementById('feedbackSearchBar');
+    const feedbackRatingFilter = document.getElementById('feedbackRatingFilter');
+    const feedbackDateFilter = document.getElementById('feedbackDateFilter');
+    const totalFeedbackElement = document.getElementById('totalFeedback');
+    const averageRatingElement = document.getElementById('averageRating');
+    const fiveStarFeedbackElement = document.getElementById('fiveStarFeedback');
+
+    // Other elements
+    const deleteOverlay = document.getElementById('deleteOverlay');
+    const deleteAccountName = document.getElementById('deleteAccountName');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const editOverlay = document.getElementById('editOverlay');
+    const editAccountName = document.getElementById('editAccountName');
+    const editCustomerName = document.getElementById('editCustomerName');
+    const saveEditBtn = document.getElementById('saveEditBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const reservationsOverlay = document.getElementById('reservationsOverlay');
+    const reservationsTitle = document.getElementById('reservationsTitle');
+    const reservationsContent = document.getElementById('reservationsContent');
+    const closeReservationsBtn = document.getElementById('closeReservationsBtn');
+    const feedbackOverlay = document.getElementById('feedbackOverlay');
+    const feedbackTitle = document.getElementById('feedbackTitle');
+    const feedbackContent = document.getElementById('feedbackContent');
+    const closeFeedbackBtn = document.getElementById('closeFeedbackBtn');
+    const reportOverlay = document.getElementById('reportOverlay');
+    const reportTitle = document.getElementById('reportTitle');
+    const reportContent = document.getElementById('reportContent');
+    const closeReportBtn = document.getElementById('closeReportBtn');
+    const nameFilter = document.getElementById('nameFilter');
+    const itemsPerPageSelect = document.getElementById('itemsPerPage');
+    const prevPageBtn = document.getElementById('prevPageBtn');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+    const pageInfo = document.getElementById('pageInfo');
+    const totalCustomersElement = document.getElementById('totalCustomers');
+    const todayReservationsElement = document.getElementById('todayReservations');
+    const tomorrowReservationsElement = document.getElementById('tomorrowReservations');
+
+    // Reservation edit modal elements
+    const reservationEditOverlay = document.getElementById('reservationEditOverlay');
+    const reservationEditTitle = document.getElementById('reservationEditTitle');
+    const currentStatusDisplay = document.getElementById('currentStatusDisplay');
+    const editReservationDate = document.getElementById('editReservationDate');
+    const editReservationTime = document.getElementById('editReservationTime');
+    const editReservationPartySize = document.getElementById('editReservationPartySize');
+    const editReservationTable = document.getElementById('editReservationTable');
+    const editReservationStatus = document.getElementById('editReservationStatus');
+    const editReservationSpecialRequests = document.getElementById('editReservationSpecialRequests');
+    const editReservationContactPhone = document.getElementById('editReservationContactPhone');
+    const saveReservationEditBtn = document.getElementById('saveReservationEditBtn');
+    const cancelReservationBtn = document.getElementById('cancelReservationBtn');
+    const cancelReservationEditBtn = document.getElementById('cancelReservationEditBtn');
+
+    let membersData = generateMembersData();
+    let currentMember = null;
+    let currentPage = 1;
+    let itemsPerPage = 20;
+    let filteredMembers = [];
+
+    // Variables for reservation editing
+    let currentReservationMember = null;
+    let currentReservation = null;
+
+    // Function to update stats
+    function updateStats() {
+      const total = membersData.length;
+      totalCustomersElement.textContent = total.toLocaleString();
+
+      // Update report metrics
+      const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      const tomorrow = new Date(Date.now() + 86400000).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+      let todayCount = 0;
+      let tomorrowCount = 0;
+
+      membersData.forEach(member => {
+        member.reservations.forEach(reservation => {
+          if (reservation.date === today) todayCount++;
+          if (reservation.date === tomorrow) tomorrowCount++;
+        });
+      });
+
+      todayReservationsElement.textContent = todayCount;
+      tomorrowReservationsElement.textContent = tomorrowCount;
+
+      // Update reservations stats
+      updateReservationsStats();
+
+      // Update feedback stats
+      updateFeedbackStats();
+    }
+
+    // Function to update reservations stats
+    function updateReservationsStats() {
+      let total = 0;
+      let confirmed = 0;
+      let pending = 0;
+      let cancelled = 0;
+
+      membersData.forEach(member => {
+        total += member.reservations.length;
+        member.reservations.forEach(reservation => {
+          if (reservation.status === 'confirmed') confirmed++;
+          if (reservation.status === 'pending') pending++;
+          if (reservation.status === 'cancelled') cancelled++;
+        });
+      });
+
+      totalReservationsElement.textContent = total;
+      confirmedReservationsElement.textContent = confirmed;
+      pendingReservationsElement.textContent = pending;
+      cancelledReservationsElement.textContent = cancelled;
+    }
+
+    // Function to update feedback stats
+    function updateFeedbackStats() {
+      let total = 0;
+      let totalRating = 0;
+      let fiveStar = 0;
+
+      membersData.forEach(member => {
+        total += member.feedback.length;
+        member.feedback.forEach(fb => {
+          totalRating += fb.rating;
+          if (fb.rating === 5) fiveStar++;
+        });
+      });
+
+      totalFeedbackElement.textContent = total;
+      fiveStarFeedbackElement.textContent = fiveStar;
+
+      if (total > 0) {
+        const average = (totalRating / total).toFixed(1);
+        averageRatingElement.textContent = average;
+      } else {
+        averageRatingElement.textContent = '0.0';
+      }
+    }
+
+    // Function to filter members
+    function filterMembers() {
+      const nameFilterValue = nameFilter.value.toLowerCase();
+
+      filteredMembers = membersData;
+
+      // Apply name/email filter
+      if (nameFilterValue) {
+        filteredMembers = filteredMembers.filter(member =>
+          member.name.toLowerCase().includes(nameFilterValue) ||
+          member.email.toLowerCase().includes(nameFilterValue)
+        );
+      }
+
+      return filteredMembers;
+    }
+
+    // Function to render members table for current page
+    function renderMembersTable() {
+      const filtered = filterMembers();
+      const totalPages = Math.ceil(filtered.length / itemsPerPage);
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageMembers = filtered.slice(startIndex, endIndex);
+
+      // Update pagination controls
+      prevPageBtn.disabled = currentPage === 1;
+      nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+      pageInfo.textContent = totalPages > 0
+        ? `Page ${currentPage} of ${totalPages} (${filtered.length.toLocaleString()} customers)`
+        : 'No customers found';
+
+      // Generate table rows
+      const tableRowsHTML = pageMembers.map((member, index) => {
+        const reservationCount = member.reservations ? member.reservations.length : 0;
+        const feedbackCount = member.feedback ? member.feedback.length : 0;
+
+        return `
+        <tr data-member="${member.id}">
+          <td>
+            <div class="photo-placeholder">${member.name.charAt(0)}</div>
+          </td>
+          <td>${member.name}</td>
+          <td>${member.email}</td>
+          <td>
+            <div class="details-column">
+              <button class="reservation-btn" onclick="showReservations(${member.id})">
+                ✏️ Reservations (${reservationCount})
+              </button>
+              <button class="feedback-btn" onclick="showFeedback(${member.id})">
+                Feedback (${feedbackCount})
+              </button>
+            </div>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-btn edit-btn" onclick="editCustomer(${member.id})" title="Edit">✏️</button>
+              <button class="action-btn trash-btn" onclick="deleteCustomer(${member.id})" title="Delete">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `}).join('');
+
+      membersTableBody.innerHTML = tableRowsHTML;
+
+      // Update stats
+      updateStats();
+    }
+
+    // Function to render all reservations
+    function renderAllReservations() {
+      // Collect all reservations from all customers
+      let allReservations = [];
+      membersData.forEach(member => {
+        member.reservations.forEach(reservation => {
+          allReservations.push({
+            ...reservation,
+            customerName: member.name,
+            customerEmail: member.email,
+            customerId: member.id
+          });
+        });
+      });
+
+      // Apply filters
+      let filteredReservations = allReservations;
+
+      // Status filter
+      const statusFilterValue = reservationStatusFilter.value;
+      if (statusFilterValue !== 'all') {
+        filteredReservations = filteredReservations.filter(res => res.status === statusFilterValue);
+      }
+
+      // Date filter
+      const dateFilterValue = reservationDateFilter.value.toLowerCase();
+      if (dateFilterValue) {
+        filteredReservations = filteredReservations.filter(res =>
+          res.date.toLowerCase().includes(dateFilterValue)
+        );
+      }
+
+      // Search bar filter
+      const searchValue = reservationsSearchBar.value.toLowerCase();
+      if (searchValue) {
+        filteredReservations = filteredReservations.filter(res =>
+          res.customerName.toLowerCase().includes(searchValue) ||
+          res.date.toLowerCase().includes(searchValue) ||
+          res.table.toLowerCase().includes(searchValue) ||
+          res.customerEmail.toLowerCase().includes(searchValue)
+        );
+      }
+
+      // Sort by date (most recent first)
+      filteredReservations.sort((a, b) => {
+        // Simple string comparison for demo - in real app you'd parse dates
+        return b.date.localeCompare(a.date);
+      });
+
+      // Generate HTML
+      if (filteredReservations.length > 0) {
+        const reservationsHTML = filteredReservations.map(res => {
+          const statusClass = `status-${res.status}`;
+          return `
+          <div class="reservation-item-global">
+            <div class="reservation-header-global">
+              <div class="reservation-customer-info">
+                <div class="reservation-customer-name">${res.customerName}</div>
+                <div class="reservation-customer-email">${res.customerEmail}</div>
+              </div>
+              <div>
+                <div class="reservation-date-global">${res.date}</div>
+                <div class="reservation-status ${statusClass}">${res.status}</div>
+              </div>
+            </div>
+            <div class="reservation-details-global">
+              <div class="detail-item">
+                <span class="detail-label">Time</span>
+                <span class="detail-value">${res.time}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Party Size</span>
+                <span class="detail-value">${res.partySize} people</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Table</span>
+                <span class="detail-value">${res.table}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Contact</span>
+                <span class="detail-value">${res.contactPhone}</span>
+              </div>
+            </div>
+            ${res.specialRequests ? `<div style="margin-top: 15px; font-size: 14px;"><strong>Special Requests:</strong> ${res.specialRequests}</div>` : ''}
+            <button class="reservation-edit-btn" onclick="editReservation(${res.customerId}, ${res.id})" title="Edit Reservation">✏️</button>
+          </div>
+        `}).join('');
+
+        allReservationsList.innerHTML = reservationsHTML;
+      } else {
+        allReservationsList.innerHTML = '<div class="no-data">No reservations found</div>';
+      }
+
+      // Update stats
+      updateReservationsStats();
+    }
+
+    // Function to render all feedback
+    function renderAllFeedback() {
+      // Collect all feedback from all customers
+      let allFeedback = [];
+      membersData.forEach(member => {
+        member.feedback.forEach(feedback => {
+          allFeedback.push({
+            ...feedback,
+            customerName: member.name,
+            customerEmail: member.email,
+            customerId: member.id
+          });
+        });
+      });
+
+      // Apply filters
+      let filteredFeedback = allFeedback;
+
+      // Rating filter
+      const ratingFilterValue = feedbackRatingFilter.value;
+      if (ratingFilterValue !== 'all') {
+        filteredFeedback = filteredFeedback.filter(fb => fb.rating === parseInt(ratingFilterValue));
+      }
+
+      // Date filter
+      const dateFilterValue = feedbackDateFilter.value.toLowerCase();
+      if (dateFilterValue) {
+        filteredFeedback = filteredFeedback.filter(fb =>
+          fb.date.toLowerCase().includes(dateFilterValue)
+        );
+      }
+
+      // Search bar filter
+      const searchValue = feedbackSearchBar.value.toLowerCase();
+      if (searchValue) {
+        filteredFeedback = filteredFeedback.filter(fb =>
+          fb.customerName.toLowerCase().includes(searchValue) ||
+          fb.text.toLowerCase().includes(searchValue) ||
+          fb.customerEmail.toLowerCase().includes(searchValue)
+        );
+      }
+
+      // Sort by date (most recent first)
+      filteredFeedback.sort((a, b) => {
+        // Simple string comparison for demo - in real app you'd parse dates
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      // Generate HTML
+      if (filteredFeedback.length > 0) {
+        const feedbackHTML = filteredFeedback.map(fb => {
+          const stars = '★'.repeat(fb.rating) + '☆'.repeat(5 - fb.rating);
+          return `
+          <div class="feedback-item-global">
+            <div class="feedback-header-global">
+              <div class="feedback-customer-info">
+                <div class="feedback-customer-name">${fb.customerName}</div>
+                <div class="feedback-customer-email">${fb.customerEmail}</div>
+              </div>
+              <div class="feedback-date-global">${fb.date}</div>
+            </div>
+            <div class="feedback-rating-global">
+              <span class="star">${stars}</span>
+              <span style="margin-left: 10px; font-size: 14px;">${fb.rating}/5</span>
+            </div>
+            <div class="feedback-text-global">${fb.text}</div>
+          </div>
+        `}).join('');
+
+        allFeedbackList.innerHTML = feedbackHTML;
+      } else {
+        allFeedbackList.innerHTML = '<div class="no-data">No feedback found</div>';
+      }
+
+      // Update stats
+      updateFeedbackStats();
+    }
+
+    function showReservations(memberId) {
+      const member = membersData.find(m => m.id === memberId);
+      if (member) {
+        reservationsTitle.textContent = `Reservations for ${member.name}`;
+
+        if (member.reservations && member.reservations.length > 0) {
+          const reservationsHTML = member.reservations.map(res => {
+            const statusClass = `status-${res.status}`;
+            return `
+            <div class="reservation-item">
+              <div class="reservation-header">
+                <div class="reservation-date">${res.date}</div>
+                <div class="reservation-status ${statusClass}">${res.status}</div>
+              </div>
+              <div class="reservation-details">
+                <div class="detail-item">
+                  <span class="detail-label">Time</span>
+                  <span class="detail-value">${res.time}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Party Size</span>
+                  <span class="detail-value">${res.partySize} people</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Table</span>
+                  <span class="detail-value">${res.table}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Contact</span>
+                  <span class="detail-value">${res.contactPhone}</span>
+                </div>
+              </div>
+              ${res.specialRequests ? `<div style="margin-top: 10px; font-size: 14px;"><strong>Special Requests:</strong> ${res.specialRequests}</div>` : ''}
+              <button class="reservation-edit-btn" onclick="editReservation(${member.id}, ${res.id})" title="Edit Reservation">✏️</button>
+            </div>
+          `}).join('');
+
+          reservationsContent.innerHTML = `
+            <div class="reservation-list">
+              ${reservationsHTML}
+            </div>
+          `;
+        } else {
+          reservationsContent.innerHTML = '<div class="no-reservations">No reservations found for this customer.</div>';
+        }
+
+        reservationsOverlay.style.display = 'flex';
+      }
+    }
+
+    function editReservation(memberId, reservationId) {
+      const member = membersData.find(m => m.id === memberId);
+      if (member) {
+        currentReservationMember = member;
+        const reservation = member.reservations.find(r => r.id === reservationId);
+        if (reservation) {
+          currentReservation = reservation;
+          reservationEditTitle.textContent = `Edit Reservation for ${member.name}`;
+
+          // Update current status display
+          const statusText = reservation.status.charAt(0).toUpperCase() + reservation.status.slice(1);
+          currentStatusDisplay.innerHTML = `Current Status: <span class="status-${reservation.status}-display">${statusText}</span>`;
+
+          // Fill form fields
+          editReservationDate.value = reservation.date;
+          editReservationTime.value = reservation.time;
+          editReservationPartySize.value = reservation.partySize;
+          editReservationTable.value = reservation.table;
+          editReservationStatus.value = reservation.status;
+          editReservationSpecialRequests.value = reservation.specialRequests || '';
+          editReservationContactPhone.value = reservation.contactPhone;
+
+          reservationEditOverlay.style.display = 'flex';
+        }
+      }
+    }
+
+    function showFeedback(memberId) {
+      const member = membersData.find(m => m.id === memberId);
+      if (member) {
+        feedbackTitle.textContent = `Feedback from ${member.name}`;
+
+        if (member.feedback && member.feedback.length > 0) {
+          const feedbackHTML = member.feedback.map(fb => {
+            const stars = '★'.repeat(fb.rating) + '☆'.repeat(5 - fb.rating);
+            return `
+            <div class="feedback-item">
+              <div class="feedback-date">${fb.date}</div>
+              <div class="feedback-rating">
+                <span class="star">${stars}</span>
+                <span style="margin-left: 10px; font-size: 14px;">${fb.rating}/5</span>
+              </div>
+              <div class="feedback-text">${fb.text}</div>
+            </div>
+          `}).join('');
+
+          feedbackContent.innerHTML = `
+            <div class="feedback-list">
+              ${feedbackHTML}
+            </div>
+          `;
+        } else {
+          feedbackContent.innerHTML = '<div class="no-reservations">No feedback available for this customer yet.</div>';
+        }
+
+        feedbackOverlay.style.display = 'flex';
+      }
+    }
+
+    function editCustomer(memberId) {
+      const member = membersData.find(m => m.id === memberId);
+      if (member) {
+        currentMember = member;
+        editAccountName.textContent = `Edit ${member.name}`;
+        editCustomerName.value = member.name;
+        editOverlay.style.display = 'flex';
+      }
+    }
+
+    function deleteCustomer(memberId) {
+      const member = membersData.find(m => m.id === memberId);
+      if (member) {
+        currentMember = member;
+        deleteAccountName.textContent = `Delete ${member.name}?`;
+        deleteOverlay.style.display = 'flex';
+      }
+    }
+
+    function showReport(reportType) {
+      const reportData = {
+        daily: {
+          title: 'Daily Reservations Report',
+          content: `
+            <h3>Today's Overview</h3>
+            <p><strong>Total Reservations:</strong> ${todayReservationsElement.textContent}</p>
+            <p><strong>Available Tables:</strong> 12</p>
+            <p><strong>Walk-ins Expected:</strong> 8-12</p>
+            <p><strong>Peak Hours:</strong> 19:00 - 21:00</p>
+            <h3 style="margin-top: 20px;">Tomorrow's Projections</h3>
+            <p><strong>Reservations:</strong> ${tomorrowReservationsElement.textContent}</p>
+            <p><strong>Staff Scheduled:</strong> 8 servers, 3 chefs</p>
+          `
+        },
+        revenue: {
+          title: 'Revenue Analysis Report',
+          content: `
+            <h3>Weekly Revenue</h3>
+            <p><strong>This Week:</strong> $4,850</p>
+            <p><strong>Last Week:</strong> $4,610</p>
+            <p><strong>Growth:</strong> +5.2%</p>
+            <h3 style="margin-top: 20px;">Monthly Overview</h3>
+            <p><strong>This Month:</strong> $18,920</p>
+            <p><strong>Average per Table:</strong> $75.40</p>
+            <p><strong>Most Profitable Day:</strong> Saturday</p>
+          `
+        },
+        customers: {
+          title: 'Customer Analytics Report',
+          content: `
+            <h3>Customer Overview</h3>
+            <p><strong>Total Customers:</strong> ${membersData.length}</p>
+            <p><strong>New Today:</strong> 8</p>
+            <p><strong>Regular Customers:</strong> 32</p>
+            <h3 style="margin-top: 20px;">Customer Behavior</h3>
+            <p><strong>Average Visits/Month:</strong> 2.1</p>
+            <p><strong>Favorite Day:</strong> Friday</p>
+            <p><strong>Most Popular Time:</strong> 19:30</p>
+          `
+        },
+        feedback: {
+          title: 'Customer Feedback Report',
+          content: `
+            <h3>Feedback Overview</h3>
+            <p><strong>Total Reviews:</strong> 45</p>
+            <p><strong>Average Rating:</strong> 4.7/5</p>
+            <p><strong>5-Star Reviews:</strong> 38</p>
+            <h3 style="margin-top: 20px;">Common Feedback</h3>
+            <p><strong>Positive:</strong> Great food, friendly staff</p>
+            <p><strong>Areas for Improvement:</strong> Wait times during peak hours</p>
+            <p><strong>Most Mentioned Dish:</strong> Filet Mignon</p>
+          `
+        }
+      };
+
+      const report = reportData[reportType];
+      if (report) {
+        reportTitle.textContent = report.title;
+        reportContent.innerHTML = report.content;
+        reportOverlay.style.display = 'flex';
+      }
+    }
+
+    // Function to cancel a reservation
+    async function cancelReservation() {
+      if (currentReservationMember && currentReservation) {
+        // Set status to cancelled
+        currentReservation.status = 'cancelled';
+        editReservationStatus.value = 'cancelled';
+
+        // Update status display
+        currentStatusDisplay.innerHTML = `Current Status: <span class="status-cancelled-display">Cancelled</span>`;
+
+        // Save the change (persist to backend)
+        const ok = await saveReservationChanges();
+        if (!ok) return;
+
+        // Refresh all reservations view if we're on that page
+        if (reservationsSection.classList.contains('active')) {
+          renderAllReservations();
+        }
+
+        alert('Reservation has been cancelled!');
+      }
+    }
+
+    // Function to save reservation changes (PERSISTS to backend so customers see the update)
+    async function saveReservationChanges() {
+      if (!(currentReservationMember && currentReservation)) return false;
+
+      const partySize = parseInt(editReservationPartySize.value);
+      if (Number.isNaN(partySize) || partySize <= 0) {
+        alert('Invalid party size');
+        return false;
+      }
+
+      // Convert "Table X" -> "T-X" if needed
+      let tableId = (editReservationTable.value || '').trim();
+      const m = tableId.match(/^Table\s+(\d+)$/i);
+      if (m) tableId = `T-${m[1]}`;
+
+      const payload = {
+        reservationId: currentReservation.id,
+        date: editReservationDate.value,
+        time: editReservationTime.value,
+        guests: partySize,
+        comment: editReservationSpecialRequests.value,
+        status: (editReservationStatus.value || '').toUpperCase(),
+        tableId: tableId || undefined
+      };
+
+      try {
+        const response = await fetch('/api/manager/update-reservation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          let msg = 'Update failed';
+          try {
+            const err = await response.json();
+            msg = err.message || msg;
+          } catch {
+            msg = await response.text() || msg;
+          }
+          alert(msg);
+          return false;
+        }
+
+        // Update local cached UI data after backend success
+        currentReservation.date = editReservationDate.value;
+        currentReservation.time = editReservationTime.value;
+        currentReservation.partySize = partySize;
+        currentReservation.table = editReservationTable.value;
+        currentReservation.status = (editReservationStatus.value || '').toLowerCase();
+        currentReservation.specialRequests = editReservationSpecialRequests.value;
+        currentReservation.contactPhone = editReservationContactPhone.value;
+
+        // Refresh the reservations modal to show updated data
+        if (reservationsOverlay.style.display === 'flex') {
+          showReservations(currentReservationMember.id);
+        }
+
+        // Refresh all reservations view if we're on that page
+        if (reservationsSection.classList.contains('active')) {
+          renderAllReservations();
+        }
+
+        reservationEditOverlay.style.display = 'none';
+        return true;
+      } catch (e) {
+        console.error(e);
+        alert('Network error while updating reservation');
+        return false;
+      }
+    }
+
+    // Event listeners for delete modal
+    confirmDeleteBtn.addEventListener('click', async () => {
+      if (!currentMember) {
+        deleteOverlay.style.display = 'none';
+        return;
+      }
+
+      try {
+        // Persist delete to backend so it actually deletes (not only UI cache)
+        const customerId = currentMember.customerId;
+        const response = await fetch(`/api/manager/customers/${encodeURIComponent(customerId)}`, {
+          method: 'DELETE',
+          headers: { 'Accept': 'application/json' },
+          credentials: 'include'
+        });
+
+        if (!response.ok) {
+          let msg = 'Delete failed';
+          try {
+            const err = await response.json();
+            msg = err.message || msg;
+          } catch {
+            msg = await response.text() || msg;
+          }
+          alert(msg);
+          return;
+        }
+
+        // Update UI cache only after backend success
+        const index = membersData.findIndex(m => m.id === currentMember.id);
+        if (index !== -1) {
+          membersData.splice(index, 1);
+          renderMembersTable();
+        }
+
+        // Refresh other views if they're active
+        if (reservationsSection.classList.contains('active')) {
+          renderAllReservations();
+        }
+        if (feedbackSection.classList.contains('active')) {
+          renderAllFeedback();
+        }
+
+        alert(`Customer ${currentMember.name} deleted`);
+      } catch (e) {
+        console.error(e);
+        alert('Network error while deleting customer');
+      } finally {
+        deleteOverlay.style.display = 'none';
+        currentMember = null;
+      }
+    });
+
+    cancelDeleteBtn.addEventListener('click', () => {
+      deleteOverlay.style.display = 'none';
+      currentMember = null;
+    });
+
+    // Event listeners for edit modal
+    saveEditBtn.addEventListener('click', () => {
+      if (currentMember) {
+        const newName = editCustomerName.value.trim();
+
+        if (newName && newName !== '') {
+          currentMember.name = newName;
+          renderMembersTable();
+
+          // Refresh other views if they're active
+          if (reservationsSection.classList.contains('active')) {
+            renderAllReservations();
+          }
+          if (feedbackSection.classList.contains('active')) {
+            renderAllFeedback();
+          }
+
+          alert(`Customer information updated`);
+        }
+      }
+      editOverlay.style.display = 'none';
+      currentMember = null;
+    });
+
+    cancelEditBtn.addEventListener('click', () => {
+      editOverlay.style.display = 'none';
+      currentMember = null;
+    });
+
+    // Event listener for reservation edit save button
+    saveReservationEditBtn.addEventListener('click', async () => {
+      const ok = await saveReservationChanges();
+      if (ok) alert('Reservation updated successfully!');
+    });
+
+    // Event listener for cancel reservation button
+    cancelReservationBtn.addEventListener('click', cancelReservation);
+
+    cancelReservationEditBtn.addEventListener('click', () => {
+      reservationEditOverlay.style.display = 'none';
+    });
+
+    // Event listeners for reservations modal
+    closeReservationsBtn.addEventListener('click', () => {
+      reservationsOverlay.style.display = 'none';
+    });
+
+    // Event listeners for feedback modal
+    closeFeedbackBtn.addEventListener('click', () => {
+      feedbackOverlay.style.display = 'none';
+    });
+
+    // Event listeners for report modal
+    closeReportBtn.addEventListener('click', () => {
+      reportOverlay.style.display = 'none';
+    });
+
+    // Close popups when clicking outside
+    deleteOverlay.addEventListener('click', (e) => {
+      if (e.target === deleteOverlay) {
+        deleteOverlay.style.display = 'none';
+        currentMember = null;
+      }
+    });
+
+    editOverlay.addEventListener('click', (e) => {
+      if (e.target === editOverlay) {
+        editOverlay.style.display = 'none';
+        currentMember = null;
+      }
+    });
+
+    reservationsOverlay.addEventListener('click', (e) => {
+      if (e.target === reservationsOverlay) {
+        reservationsOverlay.style.display = 'none';
+      }
+    });
+
+    feedbackOverlay.addEventListener('click', (e) => {
+      if (e.target === feedbackOverlay) {
+        feedbackOverlay.style.display = 'none';
+      }
+    });
+
+    reportOverlay.addEventListener('click', (e) => {
+      if (e.target === reportOverlay) {
+        reportOverlay.style.display = 'none';
+      }
+    });
+
+    reservationEditOverlay.addEventListener('click', (e) => {
+      if (e.target === reservationEditOverlay) {
+        reservationEditOverlay.style.display = 'none';
+      }
+    });
+
+    // Filter event listeners for customers
+    nameFilter.addEventListener('input', () => {
+      currentPage = 1;
+      renderMembersTable();
+    });
+
+    searchBar.addEventListener('input', () => {
+      nameFilter.value = searchBar.value;
+      currentPage = 1;
+      renderMembersTable();
+    });
+
+    // Filter event listeners for reservations
+    reservationsSearchBar.addEventListener('input', () => {
+      renderAllReservations();
+    });
+
+    reservationStatusFilter.addEventListener('change', () => {
+      renderAllReservations();
+    });
+
+    reservationDateFilter.addEventListener('input', () => {
+      renderAllReservations();
+    });
+
+    // Filter event listeners for feedback
+    feedbackSearchBar.addEventListener('input', () => {
+      renderAllFeedback();
+    });
+
+    feedbackRatingFilter.addEventListener('change', () => {
+      renderAllFeedback();
+    });
+
+    feedbackDateFilter.addEventListener('input', () => {
+      renderAllFeedback();
+    });
+
+    // Pagination event listeners
+    prevPageBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderMembersTable();
+      }
+    });
+
+    nextPageBtn.addEventListener('click', () => {
+      const filtered = filterMembers();
+      const totalPages = Math.ceil(filtered.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderMembersTable();
+      }
+    });
+
+    itemsPerPageSelect.addEventListener('change', () => {
+      itemsPerPage = parseInt(itemsPerPageSelect.value);
+      currentPage = 1;
+      renderMembersTable();
+    });
+
+    // Sidebar navigation
+    sidebarButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        sidebarButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const section = btn.getAttribute('data-section');
+
+        // Hide all sections
+        accountsSection.classList.remove('active');
+        reservationsSection.classList.remove('active');
+        feedbackSection.classList.remove('active');
+        reportsSection.classList.remove('active');
+
+        // Hide all search containers
+        searchContainer.style.display = 'none';
+        reservationsSearchContainer.style.display = 'none';
+        feedbackSearchContainer.style.display = 'none';
+
+        if (section === 'accounts') {
+          accountsSection.classList.add('active');
+          searchContainer.style.display = 'block';
+        } else if (section === 'reservations') {
+          reservationsSection.classList.add('active');
+          reservationsSearchContainer.style.display = 'block';
+          renderAllReservations();
+        } else if (section === 'feedback') {
+          feedbackSection.classList.add('active');
+          feedbackSearchContainer.style.display = 'block';
+          renderAllFeedback();
+        } else if (section === 'reports') {
+          reportsSection.classList.add('active');
+        }
+      });
+    });
+
+    // Initialize
+    updateStats();
+    renderMembersTable();
+    renderAllReservations();
+    renderAllFeedback();
+
+    // Initially hide other sections
+    reservationsSection.classList.remove('active');
+    feedbackSection.classList.remove('active');
+    reportsSection.classList.remove('active');
+    reservationsSearchContainer.style.display = 'none';
+    feedbackSearchContainer.style.display = 'none';
+
+    // Log restaurant stats
+    console.log(`Eden's Table Restaurant Stats:`);
+    console.log(`Total customers: ${membersData.length}`);
+</script>
+<script src="manager-dashboard-api.js"></script>
+</body>
+</html>

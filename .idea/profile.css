@@ -1,0 +1,198 @@
+/* Color Palette - Updated to Match Feedback/Login Theme */
+:root {
+    --dark-bg: #000000;         /* Pure Black Background */
+    --card-bg: transparent;     /* Transparent Card (The effect is applied via .profile-section::before and .profile-card) */
+    --accent: #d4a574;          /* Main Accent Color: Soft Gold/Brown */
+    --text-light: #FFFFFF;      /* Primary Text Color: White */
+    --muted: rgba(255, 255, 255, 0.7); /* Secondary/Placeholder Text (Muted White) */
+    --button-bg: #8B4513;       /* Main Button Color: Brown */
+    --button-hover: #5C3210;    /* Darker Brown for hover */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: transparent;
+}
+
+.profile-section {
+    position: relative;
+    background: transparent;
+    min-height: 100vh;
+    padding: 50px 0;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+/* ------------------------------------------------ */
+/* --- BACKGROUND: BLURRED IMAGE BACKGROUND --- */
+/* ------------------------------------------------ */
+.profile-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Set the uploaded image (BGS3.jpg) as the background */
+    background: url('images/porfile.jpg') no-repeat center center/cover;
+    background-attachment: fixed;
+    z-index: -1;
+
+    /* Apply Blur and Darken Filter to the background layer only */
+    filter: blur(5px) brightness(0.6);
+}
+
+
+/* Back Link - White Text/Gold Accent */
+.back-link {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+.back-link:hover {
+    color: var(--accent); /* Soft Gold/Brown on hover */
+}
+
+/* Card: SOLID DARK BACKGROUND + GOLD BORDER */
+.profile-card {
+    /* CHANGED: Solid, very dark background */
+    background-color: #8B4513;
+    /* REMOVED: backdrop-filter: blur(15px); */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5); /* Stronger shadow for definition */
+
+    padding: 35px;
+    border-radius: 20px;
+    color: var(--text-light);
+
+    /* ADDED: Gold Border around the main card */
+    border: 2px solid var(--accent);
+}
+
+/* Header Text (Your Profile Title and Email) */
+.profile-name {
+    color: var(--text-light);
+    font-weight: bold;
+}
+.text-muted {
+    color: var(--muted) !important;
+}
+
+
+/* Tabs: Use Gold/Brown accent */
+.profile-tabs .nav-link {
+    color: var(--text-light);
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 10px 15px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+.profile-tabs .nav-link.active {
+    color: var(--accent); /* Gold/Brown active text */
+    background: rgba(255,255,255,0.07);
+    border-bottom: 3px solid var(--accent); /* Gold/Brown active border */
+}
+.profile-tabs .nav-link:hover:not(.active) {
+    color: var(--accent);
+}
+
+/* Gold border to the active internal box (tab content) */
+.tab-pane.active {
+    /* Subtle background and border to define the internal section */
+    background: rgba(0,0,0,0.1);
+    border: 1px solid rgba(212, 165, 116, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Form */
+.profile-form-card {
+    margin-top: 20px;
+}
+.card-title-gold {
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Labels: White Text */
+.form-label {
+    color: var(--text-light);
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+
+/* Input: FROSTED GLASS INPUT LOOK + PROMINENT GOLD BORDER */
+.form-control {
+    background: rgba(255,255,255,0.1);
+    /* UPDATED: Increased gold border opacity for visibility */
+    border: 1px solid rgba(212, 165, 116, 0.9);
+   color: var(--text-light) !important;
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+.form-control:focus {
+    /* Focus border remains the main accent gold */
+    border-color: var(--accent);
+    box-shadow: 0 0 5px rgba(212, 165, 116, 0.4);
+    background: rgba(255,255,255,0.15);
+    color: var(--text-light) !important;
+}
+.form-control::placeholder {
+    color: var(--muted);
+}
+
+/* Buttons: SOLID BROWN BUTTON LOOK + Gold Border */
+.profile-submit-btn {
+    background: var(--button-bg);
+    /* ADDED: Prominent Gold Border around the button */
+    border: 2px solid var(--accent);
+    padding: 12px 30px;
+    font-weight: bold;
+    border-radius: 8px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.3s, transform 0.2s;
+}
+.profile-submit-btn:hover {
+    background: var(--button-hover);
+    color: var(--text-light);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Password Toggle: Gold/Brown Accent */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-40%);
+    cursor: pointer;
+    color: var(--muted);
+    transition: color 0.3s;
+}
+.password-toggle:hover {
+    color: var(--accent);
+}
+
+/* Modal */
+.modal-dark {
+    background: #111111;
+    color: var(--text-light);
+}
+.gold-text {
+    color: var(--accent) !important;
+}
+
+/* Two-Factor Switch */
+.form-check-input:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}

@@ -1,0 +1,246 @@
+/* --- Global Styles & Classic Theme --- */
+body {
+    font-family: 'Georgia', 'Times New Roman', Times, serif; /* Classic Serif Font */
+    color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+    background-color: #8B4513; /* Fallback color */
+}
+
+/* --- Hero / Background Section --- */
+.feedback-hero {
+    /* Setting the background image you uploaded */
+    background-image: url('images/img_1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Parallax effect */
+    min-height: 100vh;
+    padding: 60px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feedback-container {
+    width: 100%;
+    max-width: 650px;
+    padding: 0 20px;
+}
+
+/* --- Card Styling (The Paper Look) --- */
+.feedback-card {
+        display: flex;
+        flex-direction: column;
+        align-items: left ;
+        gap: 20px;
+        padding: 50px 60px;
+        border-radius: 40px;
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(15px);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+
+}
+
+.back-link {
+    display: inline-block;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+/* --- Typography --- */
+.feedback-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #d4a574;
+    padding-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.feedback-label {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #FFFFFF; /* Darker brown for text labels */
+    margin-bottom: 10px;
+}
+
+.required {
+    color: #d9534f;
+}
+
+/* --- Star Rating --- */
+.star-rating-large {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.star-large {
+    font-size: 2.2rem;
+    color: #ccc; /* Grey when inactive */
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+/* Hover and Active states for stars */
+.star-large:hover,
+.star-large:hover ~ .star-large, /* Selects stars after the hovered one (if reversed in HTML) or handle via JS */
+.star-large.active {
+    color: #8B4513; /* Classic Brown Stars */
+}
+
+.rating-hint {
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* --- Textarea --- */
+.feedback-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid #8B4513;
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit; /* Inherits Georgia/Times */
+    resize: vertical;
+    color: #333;
+}
+
+.feedback-textarea:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(139, 69, 19, 0.4);
+    border-color: #5C3210;
+}
+
+.char-count {
+    font-size: 0.85rem;
+    color: #FFFFFF;
+    text-align: right;
+    margin-top: 5px;
+}
+
+/* --- Checkboxes --- */
+.feedback-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.feedback-check {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.feedback-check:hover {
+    border-color: #8B4513;
+    background-color: #f9f4f0; /* Very light brown tint */
+}
+
+.feedback-checkbox {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    accent-color: #8B4513; /* Browser default styling color */
+    cursor: pointer;
+}
+
+.feedback-check-label {
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* --- Submit Button --- */
+.feedback-submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #8B4513;
+    color: #fff;
+    border: 1px solid #5C3210;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    font-family: inherit;
+}
+
+.feedback-submit-btn:hover {
+    background-color: #5C3210; /* Darker brown */
+}
+
+/* --- Error & Footer --- */
+.error-message {
+    color: #d9534f;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: none;
+}
+
+/* Make validation errors visible when JS toggles the "show" class */
+.error-message.show {
+    display: block;
+}
+
+/* Inline message area above the form (no Bootstrap dependency) */
+.form-message {
+    display: none;
+    margin: 14px 0 0 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    border: 1px solid transparent;
+}
+
+.form-message.show {
+    display: block;
+}
+
+.form-message.success {
+    background: rgba(46, 204, 113, 0.12);
+    border-color: rgba(46, 204, 113, 0.35);
+    color: #bff3d4;
+}
+
+.form-message.error {
+    background: rgba(231, 76, 60, 0.12);
+    border-color: rgba(231, 76, 60, 0.35);
+    color: #ffd0cc;
+}
+
+.footer {
+    background: #2c1e16; /* Very dark brown */
+    color: #d4a574;
+    padding: 20px 0;
+    border-top: 3px solid #8B4513;
+}

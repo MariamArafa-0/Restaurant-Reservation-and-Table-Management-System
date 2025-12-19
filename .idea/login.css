@@ -1,0 +1,132 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-image: url('images/WelcomePageImage.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.home-link {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(6px);
+    transition: 0.3s;
+}
+.home-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+
+}
+.title {
+    margin: 40px 0 20px 0;
+    color: white;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+}
+.blur-shape {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 50px 60px;
+    border-radius: 40px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+.login-form input {
+    width: 260px;
+    padding: 12px 15px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+.login-form input:focus {
+    border-color: #8B4513;
+}
+.login-form .box-button {
+    width: 220px;
+    height: 60px;
+    background-color: #8B4513;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
+.login-form .box-button:hover {
+    background-color: #A0522D; /* lighter brown */
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+.login-form input[type="text"],
+.login-form .password-wrapper input[type="password"] {
+    width: 260px;
+    padding: 12px 40px 12px 15px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+}
+.password-wrapper {
+    position: relative;
+    width: 260px;
+}
+.password-wrapper input {
+    width: 100%;
+        padding: 12px 40px 12px 15px;
+        border-radius: 15px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        outline: none;
+        box-sizing: border-box;
+}
+
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 20px;
+    color: #8B4513;
+    user-select: none;
+}
+
+.toggle-password:hover {
+    color: #A0522D;
+}
+.error-message {
+    color: #ff3333;
+    font-size: 14px;
+    margin: 5px 0 0 10px;
+    visibility: hidden;
+}

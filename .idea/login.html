@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+<a href="WelcomePage.html" class="home-link">Home</a>
+
+<h1 class="title">Login</h1>
+
+<div class="blur-shape">
+    <form class="login-form" method="POST" action="/login">
+        <div class="input-wrapper">
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <p class="error-message"></p>
+        </div>
+        <div class="password-wrapper">
+            <input type="password" placeholder="Password" id="password" name="password" required minlength="6">
+            <span class="toggle-password">🙈</span>
+            <p class="error-message"></p>
+        </div>
+
+        <button type="submit" class="box-button">Login</button>
+    </form>
+</div>
+<script src="login.js"></script>
+</body>
+</html>

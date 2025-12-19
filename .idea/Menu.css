@@ -1,0 +1,41 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    background-image: url("images/MenuPart.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+}
+
+
+.menu-image {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 25px;
+    font-family: times new roman, serif;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    z-index: 1000;
+}
+
+.back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25); /* slightly stronger on hover */
+    transform: translateY(-2px); /* optional subtle lift on hover */
+}

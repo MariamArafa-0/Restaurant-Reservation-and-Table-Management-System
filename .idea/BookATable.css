@@ -1,0 +1,265 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ================= HOME BUTTON ================= */
+.home-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 14px;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #D4AF37;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.home-button:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ================= HEADER ================= */
+.booking-header {
+    width: 100%;
+    height: 100vh;
+    background-image: url("images/BI2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.booking-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-top: 90px;
+}
+
+.booking-title {
+    font-size: 80px;
+    letter-spacing: 5px;
+    font-weight: 100;
+    color: #D4AF37;
+    margin: 0;
+}
+
+.booking-description {
+    font-family: "Times New Roman", serif;
+    font-size: 26px;
+    color: white;
+    max-width: 700px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.down-arrow {
+    width: 50px;
+    margin-top: 20px;
+}
+
+/* ================= MAIN FORM ================= */
+.deposit-section {
+    width: 100%;
+    padding: 80px 20px;
+    background-image: url("images/BGS3.jpg");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.deposit-content {
+    text-align: center;
+    max-width: 900px;
+    margin: auto;
+}
+
+.deposit-text {
+    font-size: 28px;
+    color: #D4AF37;
+}
+
+.deposit-subtext,
+.form-instruction {
+    font-size: 16px;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.large-box {
+    max-width: 900px;
+    padding: 30px;
+    border: 2px solid #D4AF37;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ================= INPUTS ================= */
+.input-box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.input-box label {
+    font-size: 14px;
+    color: #D4AF37;
+    text-align: left;
+}
+
+.input-box input,
+.input-box select {
+    border: 2px solid #D4AF37;
+    background-color: rgba(255,255,255,0);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    outline: none;
+}
+
+/* Placeholder */
+.input-box input::placeholder {
+    color: rgba(255,255,255,0.7);
+}
+
+/* Ensure filled inputs stay readable */
+.input-box input:not(:placeholder-shown),
+.input-box select {
+    color: white;
+}
+
+/* ================= CHROME AUTOFILL FIX ================= */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ================= TWO COLUMNS ================= */
+.two-boxes-wrapper {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.two-boxes-wrapper .input-box {
+    flex: 1;
+}
+
+/* ================= CUSTOM DROPDOWN ================= */
+.custom-dropdown {
+   position: relative;
+   width: 100%;
+   border: 2px solid #D4AF37;
+   border-radius: 8px;
+   padding: 0;
+   background-color: rgba(255,255,255,0);
+   font-size: 16px;
+
+}
+
+.custom-dropdown .selected {
+    padding: 12px;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+}
+
+.custom-dropdown .selected.placeholder {
+    color: rgba(255,255,255,0.7);
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.9);
+    border: 2px solid #D4AF37;
+    border-radius: 8px;
+    display: none;
+    z-index: 10;
+    max-height: 180px;   /* limits height so scroll appears when content is taller */
+        overflow-y: auto;
+
+}
+
+.dropdown-list li {
+    padding: 12px;
+    color: #D4AF37;
+    cursor: pointer;
+    text-align: left;
+
+}
+
+.dropdown-list li:hover {
+    background: #333;
+}
+select option {
+background-color: black; /* dropdown background */
+color: white; /* option text color */
+}
+/* ================= BUTTON ================= */
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* aligns button to the right */
+    margin-top: 20px;
+}
+
+.book-now-btn {
+    white-space: nowrap;
+     padding: 12px 380px;
+     font-size: 16px;
+      font-weight: bold;
+      color: Black;
+      background-color: #D4AF37; /* gold vintage fill */
+     border: none;
+     border-radius: 8px;
+     cursor: pointer;
+     transition: 0.3s;
+}
+
+.book-now-btn:hover {
+    background-color: #b8982c;
+}
+
+/* ================= FOOTER ================= */
+.thank-you-text {
+    font-size: 16px;
+    color: #D4AF37;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.contact-us {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.contact-icon {
+    width: 30px;
+}
+
+.contact-label,
+.contact-number {
+    color: #D4AF37;
+    font-size: 12px;
+}

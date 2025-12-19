@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="CustomerDashboard.css">
+</head>
+<body>
+<header>
+    <section class="hero-section">
+        <div class="call-section">
+            <img src="images/logo.png" class="logo" alt="Logo">
+            <img src="images/Call.png" class="call-icon" alt="Call Icon">
+
+            <div class="call-text">
+                <span class="title">Call us</span>
+                <span class="number">+71 111 222 3333</span>
+            </div>
+            <div class="location-section">
+                <img src="images/Location.png" class="location-icon" alt="Location Icon">
+                <span class="location-text">Cairo, Egypt</span>
+            </div>
+            <div class="header-buttons">
+<a href="reservation-management.html" class="dashboard-btn">My Reservations</a>
+                <button id="logoutBtn" class="dashboard-btn" type="button">Logout</button>
+            </div>
+        </div>
+
+        <div class="center-content">
+            <h2 class="welcome-text">Your table is ready. Relax, unwind, and enjoy a delightful dining experience.</h2>
+            <h1 class="restaurant-name">Eden's Table Restaurant</h1>
+            <a href="BookATable.html" class="book-btn">Book A Table</a>
+        </div>
+    </section>
+</header>
+
+<section class="gold-section">
+    <div class="left-text">
+        <p class="enjoy">Enjoy your meal</p>
+        <h1 class="our-menu">Our Menu</h1>
+        <button class="menu-btn" onclick="window.location.href='Menu.html'">Menu</button>
+    </div>
+    <div class="right-image">
+        <img src="images/Menu3.jpg" alt="Dish Image">
+    </div>
+</section>
+
+<section class="feedback-section">
+    <div class="feedback-content">
+        <div class="feedback-left">
+            <img src="images/AtS3.jpg" alt="Left Image" class="feedback-left-image">
+        </div>
+        <div class="feedback-right">
+            <h1 class="feedback-text">We look forward to have you dine with us</h1>
+            <a href="feedback.html" class="feedback-btn">Provide Feedback</a>
+        </div>
+    </div>
+</section>
+
+<script src="CustomerDashboard.js"></script>
+</body>
+</html>

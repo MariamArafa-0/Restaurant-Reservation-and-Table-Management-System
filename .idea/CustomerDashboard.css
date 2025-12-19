@@ -1,0 +1,299 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+.hero-section {
+    width: 100%;
+        height: 100vh; /* full viewport height */
+        background-image: url("images/Entrance.jpg");
+        background-size: cover;
+        background-position: center; /* center instead of top looks better */
+        background-repeat: no-repeat;
+}
+.book-btn {
+    font-family: "Times New Roman", serif;
+    font-size: 30px;
+    color: #A52A2A; /* fallback color */
+    background-color: transparent;
+    border: 3px solid #B8860B;
+    padding: 20px 50px;
+    border-radius: 15px;
+    cursor: pointer;
+
+
+    background: linear-gradient(to right, #d4af37, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    transition: 0.3s ease;
+    margin-top: 20px; /* space below restaurant name */
+}
+
+.book-btn:hover {
+transform: translateY(-5px);
+    background-color: rgba(255, 215, 0, 0.1); /* slight hover effect */
+}
+.center-content {
+    text-align: center;
+    height: 60vh; /* full screen section */
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+top-bar, header {
+    display: flex;
+}
+.header {
+   position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       padding: 10px 30px;
+       display: flex;
+       align-items: center;
+       gap: 50px;
+       background: rgba(0,0,0,0.45); /* semi-transparent */
+       backdrop-filter: blur(2px);
+       z-index: 1000;
+}
+
+
+
+/* Logo */
+.logo {
+    width: 150px;
+    height: auto;
+}
+.call-section {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* spacing between icon and text */
+}
+
+/* Call icon */
+.call-icon {
+    width: 30px;
+    height: auto;
+    flex-direction: row;
+}
+.call-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    color: white;
+}
+
+.call-text .title {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.call-text .number {
+    font-size: 13px;
+    color: white;
+}
+.location-section {
+    display: fixed;
+    align-items: center;
+    gap: 8px;
+    color: white;
+}
+
+.location-icon {
+    width: 28px;
+    height: auto;
+}
+
+.location-text {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.welcome-text {
+    font-family: "Brush Script MT", cursive;
+    font-size: 28px;
+    color: white;
+    margin: 20px 20px 0px 5px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+    letter-spacing: 1px;
+}
+.restaurant-name {
+    font-family: "Times New Roman", serif;
+    font-size: 60px;
+    font-weight: bold;
+    color: #B8860B;
+    text-shadow: 3px 3px 10px rgba(0,0,0,0.7); /* optional glow */
+}
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* logo left, buttons right */
+    background: rgba(0, 0, 0, 0.45); /* semi-transparent */
+    backdrop-filter: blur(2px);
+    z-index: 1000;
+}
+
+/* Container for buttons */
+.header-buttons {
+    display: flex;
+    gap: 15px;          /* space between buttons */
+    margin-left: auto;
+    text-decoration: none;
+    display: inline-block;   /* important for <a> */
+
+}
+
+/* Dashboard buttons */
+.dashboard-btn {
+    font-family: "Times New Roman", serif;
+    font-size: 17px;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1); /* semi-transparent */
+    border: none; /* no outline */
+    padding: 8px 20px;
+    border-radius: 8px; /* slightly curved edges */
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-decoration: none;
+        display: inline-block;
+}
+
+.dashboard-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25); /* hover effect */
+}
+
+
+.gold-section {
+    background-image: url("images/MenuPart.jpg");
+    background-size: cover;
+    background-position: center; /* center instead of top looks better */
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px;
+    background-color: #8b5a2b; /* golden brown */
+    height: 85vh;
+}
+.left-text {
+    width: 50%;
+    color: white;
+}
+
+.enjoy {
+    font-family: "Brush Script MT", cursive;
+    font-size: 35px;
+    margin: 0 0 15px 0;
+    color: #f8e7c7; /* light gold */
+}
+
+.our-menu {
+    font-family: "Times New Roman", serif;
+    font-size: 60px;
+    margin: 0 0 25px 0;
+    background: linear-gradient(to right, #d4af37, #ffd700);
+    -webkit-background-clip: text;
+    color: transparent; /* gold fade effect */
+}
+
+.menu-btn {
+
+    background-color: transparent;
+    color: #ffd700;
+    border: 2px solid #ffd700;
+    padding: 20px 40px;
+    font-size: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s ease;
+     font-family: "Times New Roman", serif;
+     margin-left: 20px;
+}
+
+.menu-btn:hover {
+transform: translateY(-5px);
+    background-color: rgba(255, 215, 0, 0.1);
+}
+
+
+
+.right-image img {
+    width: 420px;
+    height: auto;
+    border-radius: 15px;
+    object-fit: cover;
+}
+.feedback-section {
+    width: 100%;
+    min-height: 100vh; /* full screen */
+    background-image: url("images/BGS3.jpg"); /* optional section background */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center; /* center the content horizontally */
+    align-items: center;
+    padding: 0 50px; /* spacing from edges */
+}
+
+.feedback-content {
+    display: flex;
+    align-items: center;
+    gap: 50px; /* space between image and text/button */
+}
+
+/* Left Image */
+.feedback-left-image {
+    width: 380px; /* adjust size as needed */
+    height: auto;
+    border-radius: 15px;
+    object-fit: cover;
+    margin-left:-120px;
+
+}
+
+/* Right Content (Text + Button) */
+.feedback-right {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* spacing between text and button */
+
+}
+
+/* Large Text */
+.feedback-text {
+    font-family: "Brush Script MT", cursive;
+    font-size: 40px;
+    color: #ffd700; /* golden text */
+    margin: 0;
+}
+
+/* Button below text */
+.feedback-btn {
+    font-family: "Times New Roman", serif;
+    font-size: 16px;           /* smaller font */
+    color: #CFB53B;             /* old gold */
+    background-color: transparent;
+    border: 2px solid #CFB53B; /* old gold outline */
+    padding: 8px 25px;          /* button padding */
+    border-radius: 12px;        /* curved edges */
+    cursor: pointer;
+    transition: 0.3s ease, transform 0.3s ease;
+    text-decoration: none !important;
+    text-align: center;
+}
+
+.feedback-btn:hover {
+    background-color: rgba(207, 181, 59, 0.1);
+    transform: translateY(-3px); /* move button slightly up on hover */
+}
+

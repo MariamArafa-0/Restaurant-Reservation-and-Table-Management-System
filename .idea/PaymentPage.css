@@ -1,0 +1,140 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Full-page background */
+.payment-section {
+   width: 100%;
+       height: 100vh;
+       background-image: url("images/BGS3.jpg"); /* replace with your image */
+       background-size: cover;
+       background-position: center;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       position: relative;
+   }
+
+/* Semi-transparent container */
+.payment-form {
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    padding: 60px;
+    border-radius: 20px;
+    width: 400px;
+    text-align: center;
+
+}
+
+/* Optional title */
+.payment-title {
+    color: #D4AF37;
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+/* Inner payment box */
+.payment-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Labels */
+.input-box label {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    color: #D4AF37;
+    margin-bottom: 10px;
+    margin-top:10px;
+}
+
+/* Inputs */
+.input-box input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #D4AF37;
+    border-radius: 8px;
+    background-color: rgba(255,255,255,0);
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Placeholder */
+.input-box input::placeholder {
+    color: rgba(255,255,255,0.7);
+}
+
+/* Card Icons */
+.payment-icons {
+    display: flex;
+    gap: 30px; /* Shorter gap between icons */
+    justify-content: center; /* center horizontally, change if needed */
+    margin-top: 20px; /* space above icons */
+}
+
+.payment-icons img {
+    width: 80px; /* Adjust size as needed */
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Smooth animation */
+}
+
+.payment-icons img:hover {
+    transform: translateY(-5px); /* Moves icon slightly up on hover */
+}
+
+
+/* Pay button */
+.pay-btn {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #D4AF37;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.pay-btn:hover {
+    background-color: #bfa333;
+}
+.top-left-icon {
+    position: absolute;    /* Position relative to the page */
+    top: 20px;             /* Distance from top */
+    left: 20px;            /* Distance from left */
+    width: 50px;           /* Adjust size as needed */
+    height: auto;
+    z-index: 10;           /* Make sure it appears above other content */
+}
+/* Divider line with text in the middle */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid white;
+}
+
+.divider span {
+    padding: 0 10px;
+    color: white;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+
+

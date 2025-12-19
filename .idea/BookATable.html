@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book A Table</title>
+    <link rel="stylesheet" href="BookATable.css">
+</head>
+<body>
+
+<section class="booking-header">
+    <div class="booking-content">
+        <a href="CustomerDashboard.html" class="home-button">Home</a>
+        <h1 class="booking-title">BOOKING</h1>
+        <p class="booking-description">
+            We are delighted to host you for a memorable dining experience.
+            We look forward to welcoming you to our restaurant and creating an unforgettable dining experience for you.
+        </p>
+        <img src="images/img.png" alt="Down Arrow" class="down-arrow">
+    </div>
+</section>
+
+<section class="deposit-section">
+    <div class="deposit-content">
+        <p class="deposit-text">
+            In order to secure your reservation, we kindly request a deposit of 500 EGP
+        </p>
+        <p class="deposit-subtext">
+            The deposit serves as a confirmation of your booking and will be deducted from your final bill
+        </p>
+
+        <form class="booking-form" id="booking-form">
+            <div class="large-box">
+                <p class="form-instruction">
+                    Once you have completed the form below with the necessary details, you will be automatically redirected to our secure payment window.
+                </p>
+
+                <div class="two-boxes-wrapper">
+                    <div class="input-box">
+                        <label for="name">NAME</label>
+                        <input type="text" id="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="surname">SURNAME</label>
+                        <input type="text" id="surname" placeholder="Your Surname" required>
+                    </div>
+                </div>
+
+                <div class="input-box">
+                    <label for="phone">PHONE</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="email">EMAIL</label>
+                    <input type="email" id="email" name="email" placeholder="Your Email" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="guests">NUMBER OF GUESTS</label>
+                    <div class="custom-dropdown">
+                        <div class="selected placeholder">Choose number of guests</div>
+                        <ul class="dropdown-list"></ul>
+                        <input type="hidden" id="guests" name="guests" value="">
+                    </div>
+                </div>
+
+                <div class="two-boxes-wrapper">
+                    <div class="input-box">
+                        <label for="event">EVENT</label>
+                        <select id="event" name="event">
+                            <option value="No special event">No special event</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Anniversary">Anniversary</option>
+                            <option value="Date night">Date night</option>
+                            <option value="Business meal">Business meal</option>
+                            <option value="Celebration">Celebration</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label for="diet">COMMENT (Optional)</label>
+                        <input type="text" id="diet" name="diet" placeholder="Optional">
+                    </div>
+                </div>
+
+                <div class="two-boxes-wrapper">
+                    <div class="input-box">
+                        <label for="date">DATE</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="time">TIME</label>
+                        <select id="time" name="time" required>
+                            <option value="18:00">6:00 PM</option>
+                            <option value="19:00">7:00 PM</option>
+                            <option value="20:00">8:00 PM</option>
+                            <option value="21:00">9:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" id="book-now" class="book-now-btn">Book Now</button>
+                </div>
+            </div>
+            <p class="thank-you-text">Thank you for choosing us</p>
+        </form>
+    </div>
+
+    <div class="contact-us">
+        <img src="images/Call.png" alt="Contact Icon" class="contact-icon">
+        <div class="contact-text">
+            <p class="contact-label">Contact Us</p>
+            <p class="contact-number">+71 111 222 3333</p>
+        </div>
+    </div>
+</section>
+
+<script src="BookATable.js"></script>
+
+</body>
+</html>

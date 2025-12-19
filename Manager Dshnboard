@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eden's Table - Restaurant Manager</title>
+<style>
+:root {
+  --primary: #8B4513;
+  --light-primary: #a65c2f;
+  --bg-dark: #1e1e1e;
+  --card-bg: #2a2a2a;
+  --text-color: #f3f3f3;
+  --accent: #d1a173;
+  --button-bg: #444;
+  --button-hover: #666;
+  --table-header-bg: #3a3a3a;
+  --table-row-even: #2a2a2a;
+  --table-row-odd: #252525;
+  --reservation-btn: #2196F3;
+  --feedback-btn: #4CAF50;
+  --edit-btn: #FFC107;
+  --add-button: #4CAF50;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--text-color);
+}
+
+.sidebar {
+  width: 80px;
+  background-color: var(--primary);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px;
+}
+
+.sidebar h2 { 
+  font-size: 16px; 
+  margin-bottom: 40px; 
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+}
+
+.sidebar-nav button {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 12px 0;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-nav button:hover { 
+  background-color: var(--light-primary); 
+}
+
+.sidebar-nav button.active { 
+  background-color: var(--light-primary); 
+  border: 2px solid var(--accent);
+}
+
+.main { 
+  flex: 1; 
+  padding: 30px; 
+  overflow-y: auto; 
+  background-color: var(--bg-dark); 
+  display: flex;
+  flex-direction: column;
+}
+
+.header { 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #444;
+  flex-shrink: 0;
+}
+
+.header-title {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.add-button {
+  background-color: var(--add-button);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.search-container {
+  margin-bottom: 30px;
+  display: none;
+  flex-shrink: 0;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: var(--table-row-even);
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: var(--text-color);
+  font-size: 16px;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.table-container {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.members-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  flex: 1;
+  min-height: 400px;
+  table-layout: fixed;
+}
+
+.members-table thead {
+  position: sticky;
+  top: 0;
+}
+
+.members-table th {
+  background-color: var(--table-header-bg);
+  padding: 16px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #444;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.members-table td {
+  padding: 16px;
+  border-bottom: 1px solid #444;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.members-table tbody {
+  overflow-y: auto;
+  display: block;
+  height: calc(100vh - 400px);
+}
+
+.members-table thead, .members-table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.members-table tbody tr:nth-child(even) {
+  background-color: var(--table-row-even);
+}
+
+.members-table tbody tr:nth-child(odd) {
+  background-color: var(--table-row-odd);
+}
+
+.members-table tbody tr:hover {
+  background-color: #3a3a3a;
+}
+
+.photo-placeholder {
+  width: 40px;
+  height: 40px;
+  background-color: #555;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 12px;
+}
+
+.reservation-btn {
+  background-color: var(--reservation-btn);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s;
+  min-width: 120px;
+  text-align: center;
+}
+
+.reservation-btn:hover {
+  background-color: #0b7dda;
+  transform: scale(1.05);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.action-btn:hover {
+  background-color: rgba(209, 161, 115, 0.1);
+}
+
+.edit-btn {
+  color: var(--edit-btn);
+}
+
+.trash-btn {
+  color: #ff6b6b;
+}
+
+.feedback-btn {
+  background: none;
+  border: none;
+  color: var(--feedback-btn);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.feedback-btn:hover {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.stats-container {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.filter-container {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.filter-title {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: var(--accent);
+}
+
+.filter-options {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-option {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-option label {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.filter-option select,
+.filter-option input {
+  padding: 8px 12px;
+  background-color: var(--table-row-even);
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: var(--text-color);
+  width: 100%;
+}
+
+.filter-option select:focus,
+.filter-option input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Popup Modal */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 12px;
+  min-width: 300px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.popup-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: var(--accent);
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.popup-btn {
+  background: var(--button-bg);
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+  min-width: 100px;
+}
+
+.popup-btn:hover {
+  background: var(--button-hover);
+}
+
+.popup-btn-edit {
+  background-color: #2196F3;
+}
+
+.popup-btn-edit:hover {
+  background-color: #0b7dda;
+}
+
+.popup-btn-delete {
+  background-color: #f44336;
+}
+
+.popup-btn-delete:hover {
+  background-color: #da190b;
+}
+
+.popup-btn-cancel {
+  background-color: #666;
+}
+
+.popup-btn-cancel:hover {
+  background-color: #777;
+}
+
+.reports-section {
+  display: none;
+  flex: 1;
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.report-card {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 5px solid var(--accent);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.report-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.report-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-size: 16px;
+}
+
+.report-card p {
+  color: #aaa;
+  line-height: 1.4;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.report-metrics {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.report-metric {
+  text-align: center;
+}
+
+.report-metric-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.report-metric-label {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  flex-shrink: 0;
+}
+
+.pagination-btn {
+  background-color: var(--button-bg);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: var(--button-hover);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* Responsive table columns */
+@media (max-width: 1200px) {
+  .members-table th, .members-table td {
+    padding: 12px;
+  }
+  
+  .members-table {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 992px) {
+  .sidebar {
+    width: 60px;
+  }
+  
+  .main {
+    padding: 20px;
+  }
+  
+  .filter-options {
+    flex-direction: column;
+  }
+  
+  .filter-option {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: 80px;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .sidebar h2 {
+    writing-mode: horizontal-tb;
+    transform: none;
+    margin-bottom: 0;
+    margin-right: 20px;
+  }
+  
+  .sidebar-nav {
+    flex-direction: row;
+    gap: 20px;
+  }
+  
+  .main {
+    height: calc(100vh - 80px);
+  }
+}
+
+/* Reservation Modal */
+.reservation-content {
+  max-width: 600px;
+  max-height: 400px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.reservation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.reservation-item {
+  background-color: var(--table-row-even);
+  padding: 15px;
+  border-radius: 6px;
+  border-left: 4px solid var(--reservation-btn);
+}
+
+.reservation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.reservation-date {
+  font-weight: bold;
+  color: var(--accent);
+  font-size: 16px;
+}
+
+.reservation-status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-confirmed {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.status-pending {
+  background-color: #FFC107;
+  color: #333;
+}
+
+.status-cancelled {
+  background-color: #f44336;
+  color: white;
+}
+
+.reservation-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 2px;
+}
+
+.detail-value {
+  font-weight: bold;
+}
+
+.no-reservations {
+  text-align: center;
+  padding: 40px;
+  color: #aaa;
+  font-style: italic;
+}
+
+/* Edit Modal */
+.edit-form {
+  max-width: 400px;
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--table-row-even);
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>Eden's Table</h2>
+  <div class="sidebar-nav">
+    <button class="active" data-section="accounts" title="Customers">
+      👥
+    </button>
+    <button data-section="reports" title="Reports">
+      📊
+    </button>
+  </div>
+</div>
+
+<div class="main" id="mainContent">
+  <!-- Accounts section (default) -->
+  <div id="accountsSection">
+    <div class="header">
+      <div class="header-title">Customers</div>
+      <button class="add-button" id="addCustomerBtn">+ Add Customer</button>
+    </div>
+    
+    <div class="search-container" id="searchContainer">
+      <input type="text" class="search-bar" placeholder="Search customers by name or email...">
+    </div>
+    
+    <div class="filter-container">
+      <div class="filter-title">Filter</div>
+      <div class="filter-options">
+        <div class="filter-option">
+          <label for="nameFilter">Name or Email</label>
+          <input type="text" id="nameFilter" placeholder="Filter by name or email...">
+        </div>
+        <div class="filter-option">
+          <label for="itemsPerPage">Items per page</label>
+          <select id="itemsPerPage">
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <table class="members-table">
+        <thead>
+          <tr>
+            <th style="width: 60px">Photo</th>
+            <th style="width: 25%">Customer Name</th>
+            <th style="width: 30%">Email</th>
+            <th style="width: 20%">Details</th>
+            <th style="width: 25%">Action</th>
+          </tr>
+        </thead>
+        <tbody id="membersTableBody">
+          <!-- Table rows will be inserted here by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="pagination">
+      <button class="pagination-btn" id="prevPageBtn">← Previous</button>
+      <span class="page-info" id="pageInfo">Page 1 of 10</span>
+      <button class="pagination-btn" id="nextPageBtn">Next →</button>
+    </div>
+    
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="stat-value" id="totalCustomers">0</div>
+        <div class="stat-label">Total Customers</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Reports section (hidden by default) -->
+  <div id="reportsSection" class="reports-section">
+    <div class="header">
+      <div class="header-title">Restaurant Reports</div>
+    </div>
+    
+    <div class="reports-grid">
+      <div class="report-card" onclick="showReport('daily')">
+        <h3>Daily Reservations</h3>
+        <p>Overview of today's reservations and table availability.</p>
+        <div class="report-metrics">
+          <div class="report-metric">
+            <div class="report-metric-value" id="todayReservations">0</div>
+            <div class="report-metric-label">Today</div>
+          </div>
+          <div class="report-metric">
+            <div class="report-metric-value" id="tomorrowReservations">0</div>
+            <div class="report-metric-label">Tomorrow</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="report-card" onclick="showReport('revenue')">
+        <h3>Revenue Analysis</h3>
+        <p>Daily, weekly, and monthly revenue reports.</p>
+        <div class="report-metrics">
+          <div class="report-metric">
+            <div class="report-metric-value">$12,450</div>
+            <div class="report-metric-label">This Week</div>
+          </div>
+          <div class="report-metric">
+            <div class="report-metric-value">+8.5%</div>
+            <div class="report-metric-label">Growth</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="report-card" onclick="showReport('customers')">
+        <h3>Customer Analytics</h3>
+        <p>Customer preferences and visit frequency.</p>
+        <div class="report-metrics">
+          <div class="report-metric">
+            <div class="report-metric-value">24</div>
+            <div class="report-metric-label">New Today</div>
+          </div>
+          <div class="report-metric">
+            <div class="report-metric-value">156</div>
+            <div class="report-metric-label">Regulars</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="report-card" onclick="showReport('tables')">
+        <h3>Table Utilization</h3>
+        <p>Analysis of table turnover rates.</p>
+        <div class="report-metrics">
+          <div class="report-metric">
+            <div class="report-metric-value">78%</div>
+            <div class="report-metric-label">Occupancy</div>
+          </div>
+          <div class="report-metric">
+            <div class="report-metric-value">2.3</div>
+            <div class="report-metric-label">Turns/Day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Customer Modal -->
+<div class="popup-overlay" id="deleteOverlay">
+  <div class="popup">
+    <div class="popup-title" id="deleteAccountName">Delete Customer</div>
+    <div class="popup-buttons">
+      <button class="popup-btn popup-btn-delete" id="confirmDeleteBtn">Delete</button>
+      <button class="popup-btn popup-btn-cancel" id="cancelDeleteBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Customer Modal -->
+<div class="popup-overlay" id="editOverlay">
+  <div class="popup">
+    <div class="popup-title" id="editAccountName">Edit Customer</div>
+    <div class="edit-form">
+      <div class="form-group">
+        <label for="editCustomerName">Customer Name</label>
+        <input type="text" id="editCustomerName" placeholder="Enter customer name">
+      </div>
+      <div class="form-group">
+        <label for="editCustomerEmail">Email</label>
+        <input type="email" id="editCustomerEmail" placeholder="Enter customer email">
+      </div>
+      <div class="form-actions">
+        <button class="popup-btn popup-btn-edit" id="saveEditBtn">Save</button>
+        <button class="popup-btn popup-btn-cancel" id="cancelEditBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reservations Modal -->
+<div class="popup-overlay" id="reservationsOverlay">
+  <div class="popup">
+    <div class="popup-title" id="reservationsTitle">Customer Reservations</div>
+    <div class="reservation-content" id="reservationsContent">
+      <!-- Reservation content will be inserted here -->
+    </div>
+    <div class="popup-buttons">
+      <button class="popup-btn popup-btn-cancel" id="closeReservationsBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Report Detail Modal -->
+<div class="popup-overlay" id="reportOverlay">
+  <div class="popup">
+    <div class="popup-title" id="reportTitle">Report Details</div>
+    <div class="reservation-content" id="reportContent">
+      <!-- Report content will be inserted here -->
+    </div>
+    <div class="popup-buttons">
+      <button class="popup-btn popup-btn-cancel" id="closeReportBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Generate a dataset of customers for a restaurant
+const generateMembersData = () => {
+  const firstNames = [
+    'James', 'Mary', 'John', 'Patricia', 'Robert', 'Jennifer', 'Michael', 'Linda', 
+    'William', 'Elizabeth', 'David', 'Susan', 'Richard', 'Jessica', 'Joseph', 'Sarah',
+    'Thomas', 'Karen', 'Charles', 'Nancy', 'Christopher', 'Lisa', 'Daniel', 'Margaret',
+    'Matthew', 'Betty', 'Anthony', 'Sandra', 'Donald', 'Ashley', 'Mark', 'Kimberly',
+    'Paul', 'Emily', 'Steven', 'Donna', 'Andrew', 'Michelle', 'Kenneth', 'Carol',
+    'Joshua', 'Amanda', 'Kevin', 'Dorothy', 'Brian', 'Melissa', 'George', 'Deborah'
+  ];
+  
+  const lastNames = [
+    'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis',
+    'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson',
+    'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin', 'Lee', 'Perez', 'Thompson',
+    'White', 'Harris', 'Sanchez', 'Clark', 'Ramirez', 'Lewis', 'Robinson', 'Walker',
+    'Young', 'Allen', 'King', 'Wright', 'Scott', 'Torres', 'Nguyen', 'Hill', 'Flores',
+    'Green', 'Adams', 'Nelson', 'Baker', 'Hall', 'Rivera', 'Campbell', 'Mitchell'
+  ];
+  
+  const domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com'];
+  
+  const members = [];
+  
+  // Create 630 customers (as per your example)
+  for (let i = 1; i <= 630; i++) {
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const domain = domains[Math.floor(Math.random() * domains.length)];
+    
+    // Generate reservations for customers
+    const hasReservations = Math.random() < 0.7;
+    let reservations = [];
+    
+    if (hasReservations) {
+      const reservationCount = Math.floor(Math.random() * 5) + 1;
+      for (let r = 0; r < reservationCount; r++) {
+        const statuses = ['confirmed', 'pending', 'cancelled'];
+        const status = statuses[Math.floor(Math.random() * statuses.length)];
+        
+        const date = new Date();
+        date.setDate(date.getDate() + Math.floor(Math.random() * 30));
+        
+        const partySizes = [2, 2, 2, 4, 4, 6, 8];
+        const partySize = partySizes[Math.floor(Math.random() * partySizes.length)];
+        
+        const times = ['18:00', '19:00', '19:30', '20:00', '20:30', '21:00'];
+        const time = times[Math.floor(Math.random() * times.length)];
+        
+        const tables = ['Table 1', 'Table 2', 'Table 3', 'Table 4', 'Table 5', 'Table 6', 'Table 7', 'Table 8'];
+        const table = tables[Math.floor(Math.random() * tables.length)];
+        
+        reservations.push({
+          id: r + 1,
+          date: date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+          time: time,
+          partySize: partySize,
+          table: table,
+          status: status,
+          specialRequests: Math.random() < 0.3 ? 'Window seat requested' : '',
+          contactPhone: `+1 (555) ${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`
+        });
+      }
+    }
+    
+    members.push({
+      id: i,
+      name: `${firstName} ${lastName}`,
+      email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i % 10}@${domain}`,
+      phone: `+1 (555) ${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`,
+      reservations: reservations,
+      notes: Math.random() < 0.5 ? 'Regular customer, prefers quiet tables' : '',
+      joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toLocaleDateString()
+    });
+  }
+  
+  // Add some specific customers (regulars)
+  const specificMembers = [
+    { 
+      id: 631, 
+      name: 'George Lindelof', 
+      email: 'carlsen@armand.no', 
+      phone: '+1 (555) 123-4567',
+      reservations: [
+        { 
+          id: 1,
+          date: 'Friday, March 15, 2024',
+          time: '19:30',
+          partySize: 4,
+          table: 'Table 5',
+          status: 'confirmed',
+          specialRequests: 'Birthday celebration',
+          contactPhone: '+1 (555) 123-4567'
+        },
+        { 
+          id: 2,
+          date: 'Saturday, March 23, 2024',
+          time: '20:00',
+          partySize: 6,
+          table: 'Table 8',
+          status: 'pending',
+          specialRequests: '',
+          contactPhone: '+1 (555) 123-4567'
+        }
+      ],
+      notes: 'VIP customer, prefers table by the window',
+      joinDate: '2023-01-15'
+    },
+    { 
+      id: 632, 
+      name: 'Eric Dyer', 
+      email: 'cristofetz.sjørg@tens.no', 
+      phone: '+1 (555) 234-5678',
+      reservations: [
+        { 
+          id: 1,
+          date: 'Today, March 10, 2024',
+          time: '18:00',
+          partySize: 2,
+          table: 'Table 2',
+          status: 'confirmed',
+          specialRequests: 'Anniversary dinner',
+          contactPhone: '+1 (555) 234-5678'
+        }
+      ],
+      notes: '',
+      joinDate: '2023-11-20'
+    }
+  ];
+  
+  return [...members, ...specificMembers];
+};
+
+// Elements
+const sidebarButtons = document.querySelectorAll('.sidebar-nav button');
+const accountsSection = document.getElementById('accountsSection');
+const reportsSection = document.getElementById('reportsSection');
+const membersTableBody = document.getElementById('membersTableBody');
+const searchContainer = document.getElementById('searchContainer');
+const searchBar = document.querySelector('.search-bar');
+const deleteOverlay = document.getElementById('deleteOverlay');
+const deleteAccountName = document.getElementById('deleteAccountName');
+const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+const editOverlay = document.getElementById('editOverlay');
+const editAccountName = document.getElementById('editAccountName');
+const editCustomerName = document.getElementById('editCustomerName');
+const editCustomerEmail = document.getElementById('editCustomerEmail');
+const saveEditBtn = document.getElementById('saveEditBtn');
+const cancelEditBtn = document.getElementById('cancelEditBtn');
+const reservationsOverlay = document.getElementById('reservationsOverlay');
+const reservationsTitle = document.getElementById('reservationsTitle');
+const reservationsContent = document.getElementById('reservationsContent');
+const closeReservationsBtn = document.getElementById('closeReservationsBtn');
+const reportOverlay = document.getElementById('reportOverlay');
+const reportTitle = document.getElementById('reportTitle');
+const reportContent = document.getElementById('reportContent');
+const closeReportBtn = document.getElementById('closeReportBtn');
+const nameFilter = document.getElementById('nameFilter');
+const itemsPerPageSelect = document.getElementById('itemsPerPage');
+const prevPageBtn = document.getElementById('prevPageBtn');
+const nextPageBtn = document.getElementById('nextPageBtn');
+const pageInfo = document.getElementById('pageInfo');
+const totalCustomersElement = document.getElementById('totalCustomers');
+const addCustomerBtn = document.getElementById('addCustomerBtn');
+const todayReservationsElement = document.getElementById('todayReservations');
+const tomorrowReservationsElement = document.getElementById('tomorrowReservations');
+
+let membersData = generateMembersData();
+let currentMember = null;
+let currentPage = 1;
+let itemsPerPage = 20;
+let filteredMembers = [];
+
+// Function to update stats
+function updateStats() {
+  const total = membersData.length;
+  totalCustomersElement.textContent = total.toLocaleString();
+  
+  // Update report metrics
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const tomorrow = new Date(Date.now() + 86400000).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  
+  let todayCount = 0;
+  let tomorrowCount = 0;
+  
+  membersData.forEach(member => {
+    member.reservations.forEach(reservation => {
+      if (reservation.date === today) todayCount++;
+      if (reservation.date === tomorrow) tomorrowCount++;
+    });
+  });
+  
+  todayReservationsElement.textContent = todayCount;
+  tomorrowReservationsElement.textContent = tomorrowCount;
+}
+
+// Function to filter members
+function filterMembers() {
+  const nameFilterValue = nameFilter.value.toLowerCase();
+  
+  filteredMembers = membersData;
+  
+  // Apply name/email filter
+  if (nameFilterValue) {
+    filteredMembers = filteredMembers.filter(member => 
+      member.name.toLowerCase().includes(nameFilterValue) ||
+      member.email.toLowerCase().includes(nameFilterValue)
+    );
+  }
+  
+  return filteredMembers;
+}
+
+// Function to render members table for current page
+function renderMembersTable() {
+  const filtered = filterMembers();
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const pageMembers = filtered.slice(startIndex, endIndex);
+  
+  // Update pagination controls
+  prevPageBtn.disabled = currentPage === 1;
+  nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+  pageInfo.textContent = totalPages > 0 
+    ? `Page ${currentPage} of ${totalPages} (${filtered.length.toLocaleString()} customers)` 
+    : 'No customers found';
+  
+  // Generate table rows
+  const tableRowsHTML = pageMembers.map((member, index) => {
+    const reservationCount = member.reservations ? member.reservations.length : 0;
+    
+    return `
+    <tr data-member="${member.id}">
+      <td>
+        <div class="photo-placeholder">${member.name.charAt(0)}</div>
+      </td>
+      <td>${member.name}</td>
+      <td>${member.email}</td>
+      <td>
+        <button class="reservation-btn" onclick="showReservations(${member.id})">
+          Reservations (${reservationCount})
+        </button>
+      </td>
+      <td>
+        <div class="action-buttons">
+          <button class="action-btn edit-btn" onclick="editCustomer(${member.id})" title="Edit">✏️</button>
+          <button class="action-btn trash-btn" onclick="deleteCustomer(${member.id})" title="Delete">🗑️</button>
+        </div>
+      </td>
+    </tr>
+  `}).join('');
+  
+  membersTableBody.innerHTML = tableRowsHTML;
+  
+  // Update stats
+  updateStats();
+}
+
+function showReservations(memberId) {
+  const member = membersData.find(m => m.id === memberId);
+  if (member) {
+    reservationsTitle.textContent = `Reservations for ${member.name}`;
+    
+    if (member.reservations && member.reservations.length > 0) {
+      const reservationsHTML = member.reservations.map(res => {
+        const statusClass = `status-${res.status}`;
+        return `
+        <div class="reservation-item">
+          <div class="reservation-header">
+            <div class="reservation-date">${res.date}</div>
+            <div class="reservation-status ${statusClass}">${res.status}</div>
+          </div>
+          <div class="reservation-details">
+            <div class="detail-item">
+              <span class="detail-label">Time</span>
+              <span class="detail-value">${res.time}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Party Size</span>
+              <span class="detail-value">${res.partySize} people</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Table</span>
+              <span class="detail-value">${res.table}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Contact</span>
+              <span class="detail-value">${res.contactPhone}</span>
+            </div>
+          </div>
+          ${res.specialRequests ? `<div style="margin-top: 10px; font-size: 14px;"><strong>Special Requests:</strong> ${res.specialRequests}</div>` : ''}
+        </div>
+      `}).join('');
+      
+      reservationsContent.innerHTML = `
+        <div class="reservation-list">
+          ${reservationsHTML}
+        </div>
+      `;
+    } else {
+      reservationsContent.innerHTML = '<div class="no-reservations">No reservations found for this customer.</div>';
+    }
+    
+    reservationsOverlay.style.display = 'flex';
+  }
+}
+
+function editCustomer(memberId) {
+  const member = membersData.find(m => m.id === memberId);
+  if (member) {
+    currentMember = member;
+    editAccountName.textContent = `Edit ${member.name}`;
+    editCustomerName.value = member.name;
+    editCustomerEmail.value = member.email;
+    editOverlay.style.display = 'flex';
+  }
+}
+
+function deleteCustomer(memberId) {
+  const member = membersData.find(m => m.id === memberId);
+  if (member) {
+    currentMember = member;
+    deleteAccountName.textContent = `Delete ${member.name}?`;
+    deleteOverlay.style.display = 'flex';
+  }
+}
+
+function showReport(reportType) {
+  const reportData = {
+    daily: {
+      title: 'Daily Reservations Report',
+      content: `
+        <h3>Today's Overview</h3>
+        <p><strong>Total Reservations:</strong> ${todayReservationsElement.textContent}</p>
+        <p><strong>Available Tables:</strong> 12</p>
+        <p><strong>Walk-ins Expected:</strong> 8-12</p>
+        <p><strong>Peak Hours:</strong> 19:00 - 21:00</p>
+        <h3 style="margin-top: 20px;">Tomorrow's Projections</h3>
+        <p><strong>Reservations:</strong> ${tomorrowReservationsElement.textContent}</p>
+        <p><strong>Staff Scheduled:</strong> 8 servers, 3 chefs</p>
+      `
+    },
+    revenue: {
+      title: 'Revenue Analysis Report',
+      content: `
+        <h3>Weekly Revenue</h3>
+        <p><strong>This Week:</strong> $12,450</p>
+        <p><strong>Last Week:</strong> $11,470</p>
+        <p><strong>Growth:</strong> +8.5%</p>
+        <h3 style="margin-top: 20px;">Monthly Overview</h3>
+        <p><strong>This Month:</strong> $48,920</p>
+        <p><strong>Average per Table:</strong> $85.40</p>
+        <p><strong>Most Profitable Day:</strong> Saturday</p>
+      `
+    },
+    customers: {
+      title: 'Customer Analytics Report',
+      content: `
+        <h3>Customer Overview</h3>
+        <p><strong>Total Customers:</strong> ${membersData.length}</p>
+        <p><strong>New Today:</strong> 24</p>
+        <p><strong>Regular Customers:</strong> 156</p>
+        <h3 style="margin-top: 20px;">Customer Behavior</h3>
+        <p><strong>Average Visits/Month:</strong> 2.3</p>
+        <p><strong>Favorite Day:</strong> Friday</p>
+        <p><strong>Most Popular Time:</strong> 19:30</p>
+      `
+    },
+    tables: {
+      title: 'Table Utilization Report',
+      content: `
+        <h3>Table Performance</h3>
+        <p><strong>Overall Occupancy:</strong> 78%</p>
+        <p><strong>Average Turns/Day:</strong> 2.3</p>
+        <p><strong>Best Performing Table:</strong> Table 5 (92%)</p>
+        <h3 style="margin-top: 20px;">Optimization</h3>
+        <p><strong>Underutilized Tables:</strong> 1, 7</p>
+        <p><strong>Peak Utilization:</strong> 20:00 (94%)</p>
+        <p><strong>Recommended Changes:</strong> Convert Table 1 to bar seating</p>
+      `
+    }
+  };
+  
+  const report = reportData[reportType];
+  if (report) {
+    reportTitle.textContent = report.title;
+    reportContent.innerHTML = report.content;
+    reportOverlay.style.display = 'flex';
+  }
+}
+
+// Add new customer function
+function addNewCustomer() {
+  const name = prompt("Enter customer name:");
+  if (!name || name.trim() === '') {
+    alert("Customer name is required!");
+    return;
+  }
+  
+  const email = prompt("Enter customer email:", `${name.toLowerCase().replace(' ', '.')}@example.com`);
+  
+  const newCustomer = {
+    id: membersData.length + 1,
+    name: name.trim(),
+    email: email ? email.trim() : '',
+    phone: '',
+    reservations: [],
+    notes: '',
+    joinDate: new Date().toLocaleDateString()
+  };
+  
+  membersData.push(newCustomer);
+  renderMembersTable();
+  alert(`Customer ${name} added successfully!`);
+}
+
+// Event listeners for delete modal
+confirmDeleteBtn.addEventListener('click', () => {
+  if (currentMember) {
+    const index = membersData.findIndex(m => m.id === currentMember.id);
+    if (index !== -1) {
+      membersData.splice(index, 1);
+      renderMembersTable();
+      alert(`Customer ${currentMember.name} deleted`);
+    }
+  }
+  deleteOverlay.style.display = 'none';
+  currentMember = null;
+});
+
+cancelDeleteBtn.addEventListener('click', () => {
+  deleteOverlay.style.display = 'none';
+  currentMember = null;
+});
+
+// Event listeners for edit modal
+saveEditBtn.addEventListener('click', () => {
+  if (currentMember) {
+    const newName = editCustomerName.value.trim();
+    const newEmail = editCustomerEmail.value.trim();
+    
+    if (newName && newName !== '') {
+      currentMember.name = newName;
+    }
+    if (newEmail && newEmail !== '') {
+      currentMember.email = newEmail;
+    }
+    
+    renderMembersTable();
+    alert(`Customer information updated`);
+  }
+  editOverlay.style.display = 'none';
+  currentMember = null;
+});
+
+cancelEditBtn.addEventListener('click', () => {
+  editOverlay.style.display = 'none';
+  currentMember = null;
+});
+
+// Event listeners for reservations modal
+closeReservationsBtn.addEventListener('click', () => {
+  reservationsOverlay.style.display = 'none';
+});
+
+// Event listeners for report modal
+closeReportBtn.addEventListener('click', () => {
+  reportOverlay.style.display = 'none';
+});
+
+// Close popups when clicking outside
+deleteOverlay.addEventListener('click', (e) => {
+  if (e.target === deleteOverlay) {
+    deleteOverlay.style.display = 'none';
+    currentMember = null;
+  }
+});
+
+editOverlay.addEventListener('click', (e) => {
+  if (e.target === editOverlay) {
+    editOverlay.style.display = 'none';
+    currentMember = null;
+  }
+});
+
+reservationsOverlay.addEventListener('click', (e) => {
+  if (e.target === reservationsOverlay) {
+    reservationsOverlay.style.display = 'none';
+  }
+});
+
+reportOverlay.addEventListener('click', (e) => {
+  if (e.target === reportOverlay) {
+    reportOverlay.style.display = 'none';
+  }
+});
+
+// Add customer button event
+addCustomerBtn.addEventListener('click', addNewCustomer);
+
+// Filter event listeners
+nameFilter.addEventListener('input', () => {
+  currentPage = 1;
+  renderMembersTable();
+});
+
+searchBar.addEventListener('input', () => {
+  nameFilter.value = searchBar.value;
+  currentPage = 1;
+  renderMembersTable();
+});
+
+// Pagination event listeners
+prevPageBtn.addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderMembersTable();
+  }
+});
+
+nextPageBtn.addEventListener('click', () => {
+  const filtered = filterMembers();
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderMembersTable();
+  }
+});
+
+itemsPerPageSelect.addEventListener('change', () => {
+  itemsPerPage = parseInt(itemsPerPageSelect.value);
+  currentPage = 1;
+  renderMembersTable();
+});
+
+// Sidebar navigation
+sidebarButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    sidebarButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    const section = btn.getAttribute('data-section');
+    
+    if (section === 'accounts') {
+      accountsSection.style.display = 'block';
+      reportsSection.style.display = 'none';
+      searchContainer.style.display = 'block';
+    } else if (section === 'reports') {
+      accountsSection.style.display = 'none';
+      reportsSection.style.display = 'block';
+      searchContainer.style.display = 'none';
+    }
+  });
+});
+
+// Initialize
+updateStats();
+renderMembersTable();
+reportsSection.style.display = 'none';
+searchContainer.style.display = 'block';
+
+// Log restaurant stats
+console.log(`Eden's Table Restaurant Stats:`);
+console.log(`Total customers: ${membersData.length}`);
+</script>
+
+</body>
+</html>

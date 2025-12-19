@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup</title>
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+<a href="WelcomePage.html" class="home-link">Home</a>
+<h1 class="title">Sign up</h1>
+<div class="blur-shape">
+  <form class="signup-form" >
+
+    <div class="input-wrapper">
+      <input type="email" id="email" name="email" placeholder="Email" required>
+      <p class="error-message"></p>
+    </div>
+
+    <div class="input-wrapper">
+      <input type="text" id="username" name="username" placeholder="Username" required>
+      <p class="error-message"></p>
+    </div>
+
+    <div class="password-wrapper">
+      <input type="password" placeholder="Password" id="password" name="password" required>
+      <span class="toggle-password">🙈</span>
+      <p class="error-message"></p>
+    </div>
+
+    <div class="password-wrapper">
+      <input type="password" placeholder="Confirm Password" id="confirmPassword" name="confirmPassword" required minlength="6">
+      <span class="toggle-password">🙈</span>
+      <p class="error-message"></p>
+    </div>
+    <div class="separator">
+      <span>or sign up with</span>
+    </div>
+
+    <div class="social-icons">
+      <img src="images/google.png" alt="Google" class="social-icon">
+      <img src="images/facebook.png" alt="Facebook" class="social-icon">
+    </div>
+    <p id="server-error" class="error-message" style="visibility:hidden; text-align:center;"></p>
+
+    <div class="button-container">
+      <button type="submit" class="box-button full-width">Sign Up</button>
+    </div>
+
+  </form>
+</div>
+
+<script src="signup.js"></script>
+
+</body>
+</html>

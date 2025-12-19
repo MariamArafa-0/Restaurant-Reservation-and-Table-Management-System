@@ -1,0 +1,266 @@
+/* Color Palette: Dark Teal (#122c38), Dark Background (#0d1b24), Gold (#cba660) */
+/* Color Palette: Dark Teal (#122c38), Dark Background (#0d1b24), Gold (#cba660) */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #8A3324;
+    color: #d1d9e0;
+}
+
+.reservation-section {
+    /* BRIGHTENED: Reduced opacity to 0.3 for a lighter look, and fixed extension */
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("images/reservation.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 60px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reservation-container {
+    max-width: 900px;
+}
+
+.back-link {
+    /* Set color to white as previously requested */
+    color: #FFFFFF;
+
+    text-decoration: none;
+
+    /* ENLARGE: Increased font size */
+    font-size: 1.1rem;
+
+    transition: color 0.3s;
+    outline: none;
+
+    /* Optional: Add padding for a larger click area, though not common for text links */
+    padding-right: 15px;
+}
+
+.back-link:hover {
+    color: var(--accent); /* Soft Gold/Brown on hover (kept your variable) */
+}
+
+.back-link:focus {
+    outline: none;
+    text-decoration: underline;
+}
+
+/* Adjust the main content-card padding to ensure the back link starts closer to the edge */
+/* You may need to adjust the padding of the main container if the link is too far right */
+.content-card {
+    /* Kept your existing style, but ensuring minimal left padding for the back button */
+    padding-left: 15px; /* Reduce this value from 30px to push content left */
+    padding-right: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+
+    background: #A67B5B; /* Rich Caramel Card Background */
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+/* Main Content Card - CARAMEL BOX */
+.content-card {
+    background: #A67B5B; /* Light Caramel Card Background */
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.content-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.content-title {
+    font-size: 2rem;
+    font-weight: 400;
+    font-family: 'Georgia', serif;
+    color: #122c38; /* Dark Teal for contrast on Caramel background */
+    text-align: center;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+/* Search Input - Adjusted for lighter background */
+.search-input {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #122c38;
+}
+
+.search-input:focus {
+    background: rgba(255, 255, 255, 1);
+    border-color: #8B4513; /* Saddle Brown focus */
+    box-shadow: 0 0 0 0.25rem rgba(139, 69, 19, 0.25);
+}
+
+.search-input::placeholder {
+    color: #4a3e2a;
+}
+
+/* Reservation Card Styles (List Item) - Kept dark for contrast against light caramel box */
+.reservation-card {
+    background: #A67B5B; /* Dark Teal */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 5px solid #8B4513; /* Saddle Brown stripe */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.reservation-card:hover {
+    background: ##D4AF37;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.reservation-info {
+    flex-grow: 1;
+}
+
+.reservation-info h6 {
+    font-weight: 600;
+    color: #000000; /* Gold for date/time */
+    margin-bottom: 5px;
+}
+
+.reservation-info p {
+    font-size: 0.9rem;
+    color: #000000; /* Changed to Satin Gold for better visibility on #A67B5B */
+    margin-bottom: 3px;
+}
+
+/* Changes the special requests/comments line */
+.special-requests {
+    font-size: 0.9rem;
+    color: #000000; /* Dark Espresso for consistency */
+    margin-top: 10px;
+}
+
+/* Add this rule to catch the text if it is styled as a link (common practice) */
+.special-requests a {
+    color: #000000; /* Dark Espresso to override link default color */
+    text-decoration: none;
+}
+
+.reservation-status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 15px;
+    white-space: nowrap;
+}
+
+/* Action Buttons - Keeping previous gold/red defaults for Edit/Cancel, as requested */
+.reservation-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.edit-btn {
+    background-color: #007bff; /* Primary color fallback */
+    color: white;
+    border: none;
+}
+
+.cancel-btn {
+    background-color: #e74c3c; /* Danger color fallback */
+    color: white;
+    border: none;
+}
+
+.save-btn {
+    background-color: #cba660; /* Gold */
+    color: #122c38;
+}
+
+.cancel-confirm-btn {
+    background-color: #e74c3c; /* Red */
+    color: white;
+}
+
+/* Status Colors */
+.status-upcoming {
+    background-color: #8B4513; /* <--- SADDLE BROWN */
+    color: white;             /* <--- White text for contrast */
+}
+.status-completed { background-color: #2ecc71; color: #122c38; }
+.status-cancelled { background-color: #e74c3c; color: white; }
+
+.modal-content {
+    background: #A67B5B; /* Rich Caramel (Same as your main reservation box) */
+    border: 1px solid #8B4513; /* Use Saddle Brown for the border */
+}
+
+/* You must also change the text inside the modal for readability on the light background */
+.form-label {
+    color: #4A2C2A; /* Dark Espresso for labels */
+}
+
+.modal-title {
+    color: #122c38; /* Dark Teal for the title */
+}
+
+/* Ensure input fields themselves are readable against the caramel background */
+.form-control {
+    background: rgba(255, 255, 255, 0.6); /* Semi-transparent white background for input */
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: #4A2C2A; /* Dark Espresso text inside the input */
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-close {
+    filter: invert(1);
+    /* Changed to a more standard PNG name, assuming image exists */
+    background-image: url("images/reservation.png");
+}
+
+
+.form-control:focus {
+    border-color: #cba660;
+    box-shadow: 0 0 0 0.25rem rgba(203, 166, 96, 0.25);
+}
+
+.gold-icon {
+    color: #cba660;
+}
+
+.gold-link {
+    color: #cba660;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Error Messages */
+.error-message {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: none;
+}
