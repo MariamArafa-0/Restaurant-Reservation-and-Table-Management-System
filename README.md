@@ -2,9 +2,9 @@
 
 A full-stack web application designed to digitize and streamline the dining experience. This system replaces manual booking methods with a real-time digital platform, allowing customers to book tables and managers to oversee restaurant operations efficiently.
 
-## ✨ Key Features
+##  Key Features
 
-### 👤 For Customers
+###  For Customers
 
 * **Interactive Booking:** Select date, time, and guest count with real-time availability checks.
 * **Digital Menu:** Browse restaurant offerings via a clean, visual interface.
@@ -12,21 +12,21 @@ A full-stack web application designed to digitize and streamline the dining expe
 * **Reservation History:** View, edit, or cancel bookings through a dedicated dashboard.
 * **Feedback System:** Rate your dining experience and provide comments.
 
-### 💼 For Managers
+###  For Managers
 
 * **Comprehensive Dashboard:** Monitor all incoming and past reservations.
 * **Table Management:** Real-time control over table statuses (Available, Occupied, Reserved).
 * **Account Oversight:** Manage customer data and system access.
 * **Reporting:** Generate and view reservation reports for business analysis.
 
-## 🛠️ Technical Stack
+##  Technical Stack
 
 * **Backend:** Node.js, Express.js
 * **Frontend:** HTML5, CSS3, Vanilla JavaScript
 * **Logic:** Object-Oriented Programming (OOP) in JavaScript and Java
 * **Development Tools:** Nodemon for auto-reloading server
 
-## 📁 Project Structure
+##  Project Structure
 
 ```text
 ├── .idea/                 # IDE Configuration
@@ -45,7 +45,7 @@ A full-stack web application designed to digitize and streamline the dining expe
 
 ```
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -93,7 +93,7 @@ http://localhost:3000
 
 
 
-## 👥 Contributors
+##  Contributors
 
 * **Hasan Mohammad** 
 * **Hassan El-Hakim** 
